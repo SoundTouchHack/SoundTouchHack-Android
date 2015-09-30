@@ -6,6 +6,8 @@ import android.net.nsd.NsdManager;
 import android.net.nsd.NsdServiceInfo;
 import android.util.Log;
 
+import com.bose.mdietger.soundtouchandroid.soundtouch.SoundTouch;
+
 import java.net.InetAddress;
 
 /**
@@ -14,6 +16,7 @@ import java.net.InetAddress;
 public class SoundTouchDiscoverer {
 
     public static final String TAG = "SoundTouchDiscoverer";
+    public static final String SERVICE_TYPE = "_soundtouch._tcp.";
 
     private NsdManager.DiscoveryListener mDiscoveryListener;
     private NsdManager.ResolveListener mResolveListener;
@@ -23,13 +26,12 @@ public class SoundTouchDiscoverer {
 
     public SoundTouchDiscoverer(Context ctx) {
         mNsdManager = (NsdManager)(ctx.getSystemService(Context.NSD_SERVICE));
+
         initializeResolveListener();
         initializeDiscoveryListener();
-        try {
-            mNsdManager.discoverServices("_soundtouch._tcp.local.", NsdManager.PROTOCOL_DNS_SD, mDiscoveryListener);
-        } catch (Exception e) {
-            Log.e(TAG, "Exception" + e.getMessage());
-        }
+
+        mNsdManager.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, mDiscoveryListener);
+
     }
 
     void initializeResolveListener() {
@@ -51,6 +53,8 @@ public class SoundTouchDiscoverer {
                 InetAddress host = mServiceInfo.getHost();
                 String address = host.getHostAddress();
                 Log.d("NSD", "Resolved address = " + address);
+
+                SoundTouch foundST = new SoundTouch(mServiceInfo.getServiceName(), mServiceInfo.getHost().getHostName());
             }
         };
     }
@@ -70,6 +74,15 @@ public class SoundTouchDiscoverer {
             public void onServiceFound(NsdServiceInfo service) {
                 // A service was found!  Do something with it.
                 Log.d(TAG, "Service discovery success" + service);
+
+                String name = service.getServiceName();
+                String type = service.getServiceType();
+                Log.d("NSD", "Service Name=" + name);
+                Log.d("NSD", "Service Type=" + type);
+                if (type.equals(SERVICE_TYPE)) {
+                    Log.d("NSD", "Service Found @ '" + name + "'");
+                    mNsdManager.resolveService(service, mResolveListener);
+                }
             }
 
             @Override
