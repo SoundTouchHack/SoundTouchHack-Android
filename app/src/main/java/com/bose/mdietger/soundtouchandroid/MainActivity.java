@@ -10,56 +10,57 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.bose.mdietger.soundtouchandroid.adapters.SoundTouchAdapter;
+import com.bose.mdietger.soundtouchandroid.discovery.DeviceHandler;
+import com.bose.mdietger.soundtouchandroid.discovery.SoundTouchDeviceHandler;
 import com.bose.mdietger.soundtouchandroid.discovery.SoundTouchDiscoverer;
 import com.bose.mdietger.soundtouchandroid.soundtouch.SoundTouch;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * MainActivity class. Root Activity for the Android SoundTouch App.
+ */
 public class MainActivity extends AppCompatActivity {
 
-    private List<SoundTouch> soundTouchList;
+    private SoundTouchDiscoverer discoverer;
+    private DeviceHandler deviceHandler;
+
+    private List<SoundTouch> devices;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*
-        * Dummy data
-        */
-        SoundTouch dummy1 = null;
-        SoundTouch dummy2 = null;
+        deviceHandler = new SoundTouchDeviceHandler();
+        discoverer = new SoundTouchDiscoverer(getApplicationContext(), deviceHandler);
+        discoverer.start();
 
-        try{
-            dummy1 = new SoundTouch("Soundtouch 1", "192.168.0.174");
-            dummy2 = new SoundTouch("Soundtouch 2", "127.0.0.1");
-        }catch (Exception e){
-            Log.d("Inet", e.getMessage());
-        }
-
-        soundTouchList = new ArrayList<SoundTouch>();
-        soundTouchList.add(dummy1);
-        soundTouchList.add(dummy2);
-
-        /*
-        * End dummy data
-        */
+        devices = new ArrayList<>();
+        devices.add(new SoundTouch("Name", "192.168.1.3"));
 
         ListView lvSoundTouchList = (ListView) findViewById(R.id.lvSoundTouchList);
-        SoundTouchAdapter soundTouchAdapter = new SoundTouchAdapter(this, R.layout.soundtouch_list, soundTouchList);
+        // SoundTouchAdapter soundTouchAdapter = new SoundTouchAdapter(this, R.layout.soundtouch_list, deviceHandler.getDevices());
+        SoundTouchAdapter soundTouchAdapter = new SoundTouchAdapter(this, R.layout.soundtouch_list, devices);
         lvSoundTouchList.setAdapter(soundTouchAdapter);
         lvSoundTouchList.setOnItemClickListener(new ListViewHandler());
 
-        new SoundTouchDiscoverer(getApplicationContext());
     }
 
+    /**
+     * ListViewHandler class.
+     */
     private class ListViewHandler implements OnItemClickListener {
+
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent soundtouchIntent = new Intent(getApplicationContext(), SoundTouchActivity.class);
-            soundtouchIntent.putExtra("STObject", soundTouchList.get(position));
+            // soundtouchIntent.putExtra("STObject", ((SoundTouchDeviceHandler) deviceHandler).getDevices().get(position));
+            soundtouchIntent.putExtra("STObject", devices.get(position));
             startActivity(soundtouchIntent);
         }
+
     }
+
 }

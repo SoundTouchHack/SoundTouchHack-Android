@@ -1,6 +1,5 @@
 package com.bose.mdietger.soundtouchandroid.discovery;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.nsd.NsdManager;
 import android.net.nsd.NsdServiceInfo;
@@ -8,63 +7,74 @@ import android.util.Log;
 
 import com.bose.mdietger.soundtouchandroid.soundtouch.SoundTouch;
 
-import java.net.InetAddress;
-
 /**
- * Created by dm828586 on 29/09/2015.
+ * SoundTouchDiscoverer class. This class is used to discover SoundTouch
+ * devices on the network.
  */
 public class SoundTouchDiscoverer {
 
     public static final String TAG = "SoundTouchDiscoverer";
     public static final String SERVICE_TYPE = "_soundtouch._tcp.";
 
+    private NsdManager mNsdManager;
     private NsdManager.DiscoveryListener mDiscoveryListener;
     private NsdManager.ResolveListener mResolveListener;
-
-    private NsdManager mNsdManager;
     private NsdServiceInfo mServiceInfo;
 
-    public SoundTouchDiscoverer(Context ctx) {
+    private DeviceHandler deviceHandler;
+
+    /**
+     * Instantiates a new SoundTouchDiscoverer.
+     * @param ctx the context
+     */
+    public SoundTouchDiscoverer(Context ctx, DeviceHandler handler) {
         mNsdManager = (NsdManager)(ctx.getSystemService(Context.NSD_SERVICE));
+        deviceHandler = handler;
 
         initializeResolveListener();
         initializeDiscoveryListener();
 
-        mNsdManager.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, mDiscoveryListener);
-
     }
 
+    /**
+     * Starts discovering devices.
+     */
+    public void start() {
+        mNsdManager.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, mDiscoveryListener);
+    }
+
+    /**
+     * Initializes a ResolveListener.
+     */
     void initializeResolveListener() {
         mResolveListener = new NsdManager.ResolveListener() {
 
             @Override
             public void onResolveFailed(NsdServiceInfo serviceInfo, int errorCode) {
-                // Called when the resolve fails.  Use the error code to debug.
-                Log.e(TAG, "Resolve failed" + errorCode);
+                Log.e(TAG, "Resolve failed " + errorCode);
+
+                // on failure.. retry
+                mNsdManager.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, mDiscoveryListener);
+
             }
 
             @Override
             public void onServiceResolved(NsdServiceInfo serviceInfo) {
+                Log.d(TAG, "Resolved address = " + serviceInfo.getHost().getHostName());
+
                 mServiceInfo = serviceInfo;
-
-                // Port is being returned as 9. Not needed.
-                //int port = mServiceInfo.getPort();
-
-                InetAddress host = mServiceInfo.getHost();
-                String address = host.getHostAddress();
-                Log.d("NSD", "Resolved address = " + address);
-
-                SoundTouch foundST = new SoundTouch(mServiceInfo.getServiceName(), mServiceInfo.getHost().getHostName());
+                deviceHandler.addDevice(new SoundTouch(mServiceInfo.getServiceName(), mServiceInfo.getHost().getHostName()));
             }
+
         };
     }
 
+    /**
+     * Initializes a DiscoveryListener.
+     */
     void initializeDiscoveryListener() {
-
-        // Instantiate a new DiscoveryListener
         mDiscoveryListener = new NsdManager.DiscoveryListener() {
 
-            //  Called as soon as service discovery begins.
             @Override
             public void onDiscoveryStarted(String regType) {
                 Log.d(TAG, "Service discovery started");
@@ -72,24 +82,19 @@ public class SoundTouchDiscoverer {
 
             @Override
             public void onServiceFound(NsdServiceInfo service) {
-                // A service was found!  Do something with it.
-                Log.d(TAG, "Service discovery success" + service);
+                Log.d(TAG, "Service found: " + service);
 
-                String name = service.getServiceName();
-                String type = service.getServiceType();
-                Log.d("NSD", "Service Name=" + name);
-                Log.d("NSD", "Service Type=" + type);
-                if (type.equals(SERVICE_TYPE)) {
-                    Log.d("NSD", "Service Found @ '" + name + "'");
+                Log.d(TAG, "Service Name = " + service.getServiceName());
+                Log.d(TAG, "Service Type = " + service.getServiceType());
+                if (SERVICE_TYPE.equals(service.getServiceType())) {
+                    Log.d(TAG, "Service Found @ '" + service.getServiceName() + "'");
                     mNsdManager.resolveService(service, mResolveListener);
                 }
             }
 
             @Override
             public void onServiceLost(NsdServiceInfo service) {
-                // When the network service is no longer available.
-                // Internal bookkeeping code goes here.
-                Log.e(TAG, "service lost" + service);
+                Log.e(TAG, "service lost: " + service);
             }
 
             @Override
@@ -99,15 +104,14 @@ public class SoundTouchDiscoverer {
 
             @Override
             public void onStartDiscoveryFailed(String serviceType, int errorCode) {
-                Log.e(TAG, "Discovery failed: Error code:" + errorCode);
-                //mNsdManager.stopServiceDiscovery(mDiscoveryListener);
+                Log.e(TAG, "Discovery failed: Error code: " + errorCode);
             }
 
             @Override
             public void onStopDiscoveryFailed(String serviceType, int errorCode) {
                 Log.e(TAG, "Discovery failed: Error code:" + errorCode);
-                //mNsdManager.stopServiceDiscovery(mDiscoveryListener);
             }
+
         };
 
     }
