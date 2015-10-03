@@ -16,4 +16,5 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
         android:id="@+id/soundTouchIP" />
+
 </LinearLayout>

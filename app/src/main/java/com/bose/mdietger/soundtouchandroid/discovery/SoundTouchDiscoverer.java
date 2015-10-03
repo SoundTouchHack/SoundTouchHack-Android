@@ -60,10 +60,11 @@ public class SoundTouchDiscoverer {
 
             @Override
             public void onServiceResolved(NsdServiceInfo serviceInfo) {
-                Log.d(TAG, "Resolved address = " + serviceInfo.getHost().getHostName());
-
                 mServiceInfo = serviceInfo;
-                deviceHandler.addDevice(new SoundTouch(mServiceInfo.getServiceName(), mServiceInfo.getHost().getHostName()));
+
+                Log.d(TAG, "Resolved address = " + serviceInfo.getHost().getHostName());
+                SoundTouch device = new SoundTouch(mServiceInfo.getServiceName(), mServiceInfo.getHost().getHostName());
+                deviceHandler.addDevice(device);
             }
 
         };

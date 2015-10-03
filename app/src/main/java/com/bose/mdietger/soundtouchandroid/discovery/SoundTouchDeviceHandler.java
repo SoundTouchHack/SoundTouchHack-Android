@@ -1,5 +1,7 @@
 package com.bose.mdietger.soundtouchandroid.discovery;
 
+import android.util.Log;
+
 import com.bose.mdietger.soundtouchandroid.soundtouch.SoundTouch;
 
 import java.util.ArrayList;
@@ -10,6 +12,8 @@ import java.util.List;
  * for the SoundTouchDeviceHandler for SoundTouch devices.
  */
 public class SoundTouchDeviceHandler implements DeviceHandler<SoundTouch> {
+
+    public static final String TAG = "SoundTouchDeviceHandler";
 
     private List<SoundTouch> devices;
 

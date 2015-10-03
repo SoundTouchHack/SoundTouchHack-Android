@@ -23,6 +23,8 @@ import java.util.List;
  */
 public class MainActivity extends AppCompatActivity {
 
+    public static final String TAG = "MainActivity";
+
     private SoundTouchDiscoverer discoverer;
     private DeviceHandler deviceHandler;
 
@@ -37,15 +39,25 @@ public class MainActivity extends AppCompatActivity {
         discoverer = new SoundTouchDiscoverer(getApplicationContext(), deviceHandler);
         discoverer.start();
 
-        devices = new ArrayList<>();
-        devices.add(new SoundTouch("Name", "192.168.1.3"));
-
+        SoundTouchAdapter soundTouchAdapter = new SoundTouchAdapter(this, R.layout.soundtouch_list, deviceHandler.getDevices());
         ListView lvSoundTouchList = (ListView) findViewById(R.id.lvSoundTouchList);
-        // SoundTouchAdapter soundTouchAdapter = new SoundTouchAdapter(this, R.layout.soundtouch_list, deviceHandler.getDevices());
-        SoundTouchAdapter soundTouchAdapter = new SoundTouchAdapter(this, R.layout.soundtouch_list, devices);
         lvSoundTouchList.setAdapter(soundTouchAdapter);
         lvSoundTouchList.setOnItemClickListener(new ListViewHandler());
 
+    }
+
+    /**
+     * Click Refresh.
+     * @param view the View
+     */
+    public void refresh(View view) {
+        Log.d(TAG, "Refresh list of devices");
+
+        SoundTouchAdapter soundTouchAdapter = new SoundTouchAdapter(this, R.layout.soundtouch_list, deviceHandler.getDevices());
+
+        ListView lvSoundTouchList = (ListView) findViewById(R.id.lvSoundTouchList);
+        lvSoundTouchList.setAdapter(soundTouchAdapter);
+        lvSoundTouchList.setOnItemClickListener(new ListViewHandler());
     }
 
     /**
@@ -56,8 +68,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent soundtouchIntent = new Intent(getApplicationContext(), SoundTouchActivity.class);
-            // soundtouchIntent.putExtra("STObject", ((SoundTouchDeviceHandler) deviceHandler).getDevices().get(position));
-            soundtouchIntent.putExtra("STObject", devices.get(position));
+            soundtouchIntent.putExtra("STObject", ((SoundTouchDeviceHandler) deviceHandler).getDevices().get(position));
             startActivity(soundtouchIntent);
         }
 

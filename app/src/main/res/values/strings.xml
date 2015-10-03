@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">SoundtouchAndroid</string>
+    <string name="app_name">Android SoundTouch App</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_sound_touch">SoundTouchActivity</string>
+    <string name="title_activity_sound_touch">Adjust volume</string>
 
+    <string name="refresh">Refresh</string>
     <string name="volume_up">Volume up</string>
     <string name="volume_down">Volume down</string>
 </resources>
