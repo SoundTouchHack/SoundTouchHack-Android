@@ -39,12 +39,7 @@ public class MainActivity extends AppCompatActivity {
         discoverer = new SoundTouchDiscoverer(getApplicationContext(), deviceHandler);
         discoverer.start();
 
-        SoundTouchAdapter soundTouchAdapter = new SoundTouchAdapter(this, R.layout.soundtouch_list, deviceHandler.getDevices());
-
-        ListView lvSoundTouchList = (ListView) findViewById(R.id.lvSoundTouchList);
-        lvSoundTouchList.setAdapter(soundTouchAdapter);
-        lvSoundTouchList.setOnItemClickListener(new ListViewHandler());
-
+        populateListView();
     }
 
     /**
@@ -54,6 +49,13 @@ public class MainActivity extends AppCompatActivity {
     public void refresh(View view) {
         Log.d(TAG, "Refresh list of devices");
 
+        populateListView();
+    }
+
+    /**
+     * Populates the ListView with devices from the deviceHandler.
+     */
+    protected void populateListView() {
         SoundTouchAdapter soundTouchAdapter = new SoundTouchAdapter(this, R.layout.soundtouch_list, deviceHandler.getDevices());
 
         ListView lvSoundTouchList = (ListView) findViewById(R.id.lvSoundTouchList);

@@ -37,25 +37,34 @@ public class SoundTouchDeviceManager implements DeviceManager {
 
     @Override
     public void setVolume(String volumeLevel) {
+        doPost("/volume", volumeLevel);
+    }
+
+    /**
+     * Do POST to url with path.
+     * @param path the path
+     * @param content the content
+     */
+    void doPost(String path, String content) {
         StringEntity data = null;
         try {
-            data = new StringEntity(volumeLevel);
+            data = new StringEntity(content);
             data.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/xml"));
         } catch (UnsupportedEncodingException e) {
             Log.e(TAG, "Error occured: " + e.getMessage());
             return;
         }
 
-        client.post(null, getAbsoluteUrl("/volume"), data, "application/xml", new AsyncHttpResponseHandler() {
+        client.post(null, getAbsoluteUrl(path), data, "application/xml", new AsyncHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Log.d("STApp", "Success");
+                Log.d(TAG, "Success");
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.d("STApp", "Failed");
+                Log.d(TAG, "Failed");
             }
 
         });
