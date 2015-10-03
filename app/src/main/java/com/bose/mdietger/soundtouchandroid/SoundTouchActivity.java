@@ -1,11 +1,8 @@
 package com.bose.mdietger.soundtouchandroid;
 
-import android.preference.PreferenceActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,11 +10,11 @@ import com.bose.mdietger.soundtouchandroid.http.SoundTouchHTTP;
 import com.bose.mdietger.soundtouchandroid.soundtouch.SoundTouch;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
-import org.w3c.dom.Text;
-
 import cz.msebera.android.httpclient.Header;
 
 public class SoundTouchActivity extends AppCompatActivity {
+
+    private static final String TAG = "SoundTouchActivity";
 
     private SoundTouchHTTP soundTouchHTTP;
 
@@ -37,7 +34,7 @@ public class SoundTouchActivity extends AppCompatActivity {
         soundTouchHTTP = new SoundTouchHTTP(STObject.get_ip());
     }
 
-    public void volumeUp(View v){
+    public void volumeUp(View v) {
         Log.d("STApp", "Volume Up");
         soundTouchHTTP.post("/volume", null, new AsyncHttpResponseHandler() {
             @Override
@@ -53,7 +50,7 @@ public class SoundTouchActivity extends AppCompatActivity {
         });
     }
 
-    public void volumeDown(View v){
+    public void volumeDown(View v) {
         Log.d("STApp", "Volume Down");
     }
 

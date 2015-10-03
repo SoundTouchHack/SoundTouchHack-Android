@@ -13,14 +13,26 @@ import com.bose.mdietger.soundtouchandroid.soundtouch.SoundTouch;
 import java.util.List;
 
 /**
- * Created by mdiet on 30/09/2015.
+ * SoundTouchAdapter class. This class is used as adapter for the
+ * listView.
  */
 public class SoundTouchAdapter extends ArrayAdapter<SoundTouch> {
 
+    /**
+     * Instantiates a new SoundTouchAdapter.
+     * @param context the context
+     * @param textViewResourceId the textViewResourceId
+     */
     public SoundTouchAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
     }
 
+    /**
+     * Instantiates a new SoundTouchAdapter.
+     * @param context the context
+     * @param resource the resource
+     * @param items the items
+     */
     public SoundTouchAdapter(Context context, int resource, List<SoundTouch> items) {
         super(context, resource, items);
     }

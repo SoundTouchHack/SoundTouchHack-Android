@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class MainActivity extends AppCompatActivity {
 
-    public static final String TAG = "MainActivity";
+    private static final String TAG = "MainActivity";
 
     private SoundTouchDiscoverer discoverer;
     private DeviceHandler deviceHandler;
@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         discoverer.start();
 
         SoundTouchAdapter soundTouchAdapter = new SoundTouchAdapter(this, R.layout.soundtouch_list, deviceHandler.getDevices());
+
         ListView lvSoundTouchList = (ListView) findViewById(R.id.lvSoundTouchList);
         lvSoundTouchList.setAdapter(soundTouchAdapter);
         lvSoundTouchList.setOnItemClickListener(new ListViewHandler());

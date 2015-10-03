@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class SoundTouchDeviceHandler implements DeviceHandler<SoundTouch> {
 
-    public static final String TAG = "SoundTouchDeviceHandler";
+    private static final String TAG = "SoundTouchDeviceHandler";
 
     private List<SoundTouch> devices;
 

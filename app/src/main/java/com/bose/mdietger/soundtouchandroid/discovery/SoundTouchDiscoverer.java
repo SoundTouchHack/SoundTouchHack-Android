@@ -13,8 +13,8 @@ import com.bose.mdietger.soundtouchandroid.soundtouch.SoundTouch;
  */
 public class SoundTouchDiscoverer {
 
-    public static final String TAG = "SoundTouchDiscoverer";
-    public static final String SERVICE_TYPE = "_soundtouch._tcp.";
+    private static final String TAG = "SoundTouchDiscoverer";
+    private static final String SERVICE_TYPE = "_soundtouch._tcp.";
 
     private NsdManager mNsdManager;
     private NsdManager.DiscoveryListener mDiscoveryListener;
