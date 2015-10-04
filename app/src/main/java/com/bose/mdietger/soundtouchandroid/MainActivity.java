@@ -13,8 +13,14 @@ import com.bose.mdietger.soundtouchandroid.adapters.SoundTouchAdapter;
 import com.bose.mdietger.soundtouchandroid.discovery.DeviceHandler;
 import com.bose.mdietger.soundtouchandroid.discovery.SoundTouchDeviceHandler;
 import com.bose.mdietger.soundtouchandroid.discovery.SoundTouchDiscoverer;
+import com.bose.mdietger.soundtouchandroid.http.volume.Volume;
 import com.bose.mdietger.soundtouchandroid.soundtouch.SoundTouch;
 
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+
+import java.io.ByteArrayOutputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 

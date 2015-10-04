@@ -2,6 +2,7 @@ package com.bose.mdietger.soundtouchandroid.http;
 
 import android.util.Log;
 
+import com.bose.mdietger.soundtouchandroid.http.volume.Volume;
 import com.bose.mdietger.soundtouchandroid.soundtouch.SoundTouch;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -36,8 +37,9 @@ public class SoundTouchDeviceManager implements DeviceManager {
     }
 
     @Override
-    public void setVolume(String volumeLevel) {
-        doPost("/volume", volumeLevel);
+    public void setVolume(Volume volumeLevel) {
+        String dataXml = XmlMarshaller.getInstance().marshall(volumeLevel);
+        doPost("/volume", dataXml);
     }
 
     /**

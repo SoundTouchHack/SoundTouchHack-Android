@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.bose.mdietger.soundtouchandroid.http.DeviceManager;
 import com.bose.mdietger.soundtouchandroid.http.SoundTouchDeviceManager;
+import com.bose.mdietger.soundtouchandroid.http.volume.Volume;
 import com.bose.mdietger.soundtouchandroid.soundtouch.SoundTouch;
 
 public class SoundTouchActivity extends AppCompatActivity {
@@ -34,12 +35,14 @@ public class SoundTouchActivity extends AppCompatActivity {
 
     public void volumeUp(View v) {
         Log.d(TAG, "Volume Up");
-        deviceManager.setVolume("<volume>40</volume>");
+        Volume volume = new Volume("40");
+        deviceManager.setVolume(volume);
     }
 
     public void volumeDown(View v) {
         Log.d(TAG, "Volume Down");
-        deviceManager.setVolume("<volume>30</volume>");
+        Volume volume = new Volume("30");
+        deviceManager.setVolume(volume);
     }
 
 }
