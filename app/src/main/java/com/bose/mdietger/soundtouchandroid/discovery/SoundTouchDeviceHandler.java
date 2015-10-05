@@ -2,6 +2,7 @@ package com.bose.mdietger.soundtouchandroid.discovery;
 
 import android.util.Log;
 
+import com.bose.mdietger.soundtouchandroid.callbacks.UpdateDeviceListCallback;
 import com.bose.mdietger.soundtouchandroid.soundtouch.SoundTouch;
 
 import java.util.ArrayList;
@@ -16,6 +17,11 @@ public class SoundTouchDeviceHandler implements DeviceHandler<SoundTouch> {
     private static final String TAG = "SoundTouchDeviceHandler";
 
     private List<SoundTouch> devices;
+    private UpdateDeviceListCallback updateDeviceListCallback;
+
+    public SoundTouchDeviceHandler(UpdateDeviceListCallback updateDeviceListCallback) {
+        this.updateDeviceListCallback = updateDeviceListCallback;
+    }
 
     @Override
     public List<SoundTouch> getDevices() {
@@ -36,6 +42,6 @@ public class SoundTouchDeviceHandler implements DeviceHandler<SoundTouch> {
         }
 
         this.devices.add(device);
+        this.updateDeviceListCallback.update();
     }
-
 }

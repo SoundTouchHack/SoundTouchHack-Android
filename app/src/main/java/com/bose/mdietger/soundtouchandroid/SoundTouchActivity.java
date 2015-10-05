@@ -15,6 +15,15 @@ import com.bose.mdietger.soundtouchandroid.http.volume.VolumeCallback;
 import com.bose.mdietger.soundtouchandroid.http.volume.VolumeResponse;
 import com.bose.mdietger.soundtouchandroid.http.volume.VolumeResponseListener;
 import com.bose.mdietger.soundtouchandroid.soundtouch.SoundTouch;
+import com.bose.mdietger.soundtouchandroid.websockets.WebSocketConnector;
+
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.drafts.Draft_10;
+import org.java_websocket.drafts.Draft_17;
+
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * SoundTouchActivity class. Activity for controlling the SoundTouch device.
@@ -24,6 +33,7 @@ public class SoundTouchActivity extends AppCompatActivity implements VolumeCallb
     private static final String TAG = "SoundTouchActivity";
 
     private DeviceManager deviceManager;
+    private WebSocketClient wsc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +47,17 @@ public class SoundTouchActivity extends AppCompatActivity implements VolumeCallb
 
         TextView tvIP = (TextView) findViewById(R.id.soundTouchDetailIP);
         tvIP.setText(device.getIp());
+
+        Map<String,String> headers = new HashMap<String, String>();
+        headers.put("Sec-WebSocket-Protocol","gabbo");
+
+        try{
+            wsc = new WebSocketConnector(new URI("ws://192.168.0.168:8080"), new Draft_17(), headers, 5000);
+            wsc.connect();
+        }catch(Exception e){
+            Log.d(TAG, e.getMessage());
+        }
+
 
         deviceManager = new SoundTouchDeviceManager(device);
         deviceManager.getVolume(new VolumeResponseListener(this), new DefaultResponseErrorListener());
