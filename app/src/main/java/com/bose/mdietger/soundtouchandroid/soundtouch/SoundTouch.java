@@ -3,16 +3,14 @@ package com.bose.mdietger.soundtouchandroid.soundtouch;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.net.InetAddress;
-
 /**
  * SoundTouch class. This class represents a SoundTouch device with
  * its name and ip address on the local network.
  */
 public class SoundTouch implements Parcelable {
 
-    private String _name;
-    private String _ip;
+    private String name;
+    private String ip;
 
     /**
      * Instantiates a new SoundTouch.
@@ -27,8 +25,8 @@ public class SoundTouch implements Parcelable {
      * @param ip the ip on the local network
      */
     public SoundTouch(String name, String ip) {
-        this._name = name.replace("\\\\032", " ");
-        this._ip = ip;
+        this.name = name.replace("\\\\032", " ");
+        this.ip = ip;
     }
 
     /**
@@ -39,36 +37,52 @@ public class SoundTouch implements Parcelable {
         String[] data= new String[2];
         in.readStringArray(data);
 
-        this._name = data[0];
-        this._ip = data[1];
+        this.name = data[0];
+        this.ip = data[1];
     }
 
     /**
      * @return the ip
      */
-    public String get_ip() {
-        return _ip;
+    public String getIp() {
+        return ip;
     }
 
     /**
-     * @param _ip the ip to set
+     * @param ip the ip to set
      */
-    public void set_ip(String _ip) {
-        this._ip = _ip;
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     /**
      * @return the name
      */
-    public String get_name() {
-        return _name;
+    public String getName() {
+        return name;
     }
 
     /**
-     * @param _name the name to set
+     * @param name the name to set
      */
-    public void set_name(String _name) {
-        this._name = _name;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SoundTouch that = (SoundTouch) o;
+
+        return name.equals(that.name);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
     }
 
     @Override
@@ -78,7 +92,7 @@ public class SoundTouch implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[] { this._name,this._ip });
+        dest.writeStringArray(new String[] { this.name,this.ip});
     }
 
     public static final Parcelable.Creator<SoundTouch> CREATOR = new Parcelable.Creator<SoundTouch>() {

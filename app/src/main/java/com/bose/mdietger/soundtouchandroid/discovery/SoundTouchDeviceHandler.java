@@ -30,6 +30,11 @@ public class SoundTouchDeviceHandler implements DeviceHandler<SoundTouch> {
         if (this.devices == null) {
             this.devices = new ArrayList<>();
         }
+
+        if(this.devices.contains(device)) {
+            return;
+        }
+
         this.devices.add(device);
     }
 

@@ -55,11 +55,11 @@ public class SoundTouchAdapter extends ArrayAdapter<SoundTouch> {
             TextView tt2 = (TextView) v.findViewById(R.id.soundTouchIP);
 
             if (tt1 != null) {
-                tt1.setText(st.get_name());
+                tt1.setText(st.getName());
             }
 
             if (tt2 != null) {
-                tt2.setText(st.get_ip());
+                tt2.setText(st.getIp());
             }
         }
 

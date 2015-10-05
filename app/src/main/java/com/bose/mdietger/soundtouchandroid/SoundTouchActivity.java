@@ -32,8 +32,8 @@ public class SoundTouchActivity extends AppCompatActivity implements VolumeCallb
         TextView STNaam = (TextView) findViewById(R.id.soundTouchDetailName);
         TextView STIP = (TextView) findViewById(R.id.soundTouchDetailIP);
 
-        STNaam.setText(device.get_name());
-        STIP.setText(device.get_ip());
+        STNaam.setText(device.getName());
+        STIP.setText(device.getIp());
 
         deviceManager = new SoundTouchDeviceManager(device);
         deviceManager.getVolume(new DoGetVolumeAsyncHttpResponseHandler(this));

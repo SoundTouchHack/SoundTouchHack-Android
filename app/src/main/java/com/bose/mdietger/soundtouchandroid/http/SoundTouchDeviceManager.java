@@ -1,6 +1,5 @@
 package com.bose.mdietger.soundtouchandroid.http;
 
-import android.app.ProgressDialog;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -13,14 +12,6 @@ import com.bose.mdietger.soundtouchandroid.http.volume.Volume;
 import com.bose.mdietger.soundtouchandroid.soundtouch.SoundTouch;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
-
-import cz.msebera.android.httpclient.entity.StringEntity;
-import cz.msebera.android.httpclient.message.BasicHeader;
-import cz.msebera.android.httpclient.protocol.HTTP;
 
 /**
  * SoundTouchDeviceManager class. This class is reponsible for interactions
@@ -124,7 +115,7 @@ public class SoundTouchDeviceManager implements DeviceManager {
      * @return String the absolute url
      */
     String getAbsoluteUrl(String path) {
-        return "http://" + device.get_ip() + ":" + PORT + path;
+        return "http://" + device.getIp() + ":" + PORT + path;
     }
 
 }
