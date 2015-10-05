@@ -18,8 +18,6 @@ public class SoundTouchDiscoverer {
 
     private NsdManager mNsdManager;
     private NsdManager.DiscoveryListener mDiscoveryListener;
-    private NsdManager.ResolveListener mResolveListener;
-    private NsdServiceInfo mServiceInfo;
 
     private DeviceHandler deviceHandler;
 
@@ -31,7 +29,6 @@ public class SoundTouchDiscoverer {
         mNsdManager = (NsdManager)(ctx.getSystemService(Context.NSD_SERVICE));
         deviceHandler = handler;
 
-        initializeResolveListener();
         initializeDiscoveryListener();
 
     }
@@ -41,33 +38,6 @@ public class SoundTouchDiscoverer {
      */
     public void start() {
         mNsdManager.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, mDiscoveryListener);
-    }
-
-    /**
-     * Initializes a ResolveListener.
-     */
-    void initializeResolveListener() {
-        mResolveListener = new NsdManager.ResolveListener() {
-
-            @Override
-            public void onResolveFailed(NsdServiceInfo serviceInfo, int errorCode) {
-                Log.e(TAG, "Resolve failed " + errorCode);
-
-                // on failure.. retry
-                mNsdManager.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, mDiscoveryListener);
-
-            }
-
-            @Override
-            public void onServiceResolved(NsdServiceInfo serviceInfo) {
-                mServiceInfo = serviceInfo;
-
-                Log.d(TAG, "Resolved address = " + serviceInfo.getHost().getHostAddress());
-                SoundTouch device = new SoundTouch(mServiceInfo.getServiceName(), mServiceInfo.getHost().getHostAddress());
-                deviceHandler.addDevice(device);
-            }
-
-        };
     }
 
     /**
@@ -89,7 +59,7 @@ public class SoundTouchDiscoverer {
                 Log.d(TAG, "Service Type = " + service.getServiceType());
                 if (SERVICE_TYPE.equals(service.getServiceType())) {
                     Log.d(TAG, "Service Found @ '" + service.getServiceName() + "'");
-                    mNsdManager.resolveService(service, mResolveListener);
+                    mNsdManager.resolveService(service, new SoundTouchResolveListener(deviceHandler));
                 }
             }
 
