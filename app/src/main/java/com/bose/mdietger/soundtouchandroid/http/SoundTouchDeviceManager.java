@@ -1,13 +1,22 @@
 package com.bose.mdietger.soundtouchandroid.http;
 
+import android.app.ProgressDialog;
 import android.util.Log;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.bose.mdietger.soundtouchandroid.AppController;
 import com.bose.mdietger.soundtouchandroid.http.volume.Volume;
 import com.bose.mdietger.soundtouchandroid.soundtouch.SoundTouch;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
@@ -53,7 +62,25 @@ public class SoundTouchDeviceManager implements DeviceManager {
      * @return String the response
      */
     void doGet(String path, AsyncHttpResponseHandler responseHandler) {
-        client.get(null, getAbsoluteUrl(path), null, "application/xml", responseHandler);
+        String  tag_string_req = "string_req";
+
+        StringRequest strReq = new StringRequest(Request.Method.GET,
+                getAbsoluteUrl(path), new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, response.toString());
+            }
+
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "error");
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
     /**
@@ -62,17 +89,33 @@ public class SoundTouchDeviceManager implements DeviceManager {
      * @param content the content
      * @param responseHandler the responseHandler
      */
-    void doPost(String path, String content, AsyncHttpResponseHandler responseHandler) {
-        StringEntity data = null;
-        try {
-            data = new StringEntity(content);
-            data.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/xml"));
-        } catch (UnsupportedEncodingException e) {
-            Log.e(TAG, "Error occured: " + e.getMessage());
-            return;
-        }
+    void doPost(String path, final String content, AsyncHttpResponseHandler responseHandler) {
+        String  tag_string_req = "string_req";
 
-        client.post(null, getAbsoluteUrl(path), data, "application/xml", responseHandler);
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                getAbsoluteUrl(path), new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, response.toString());
+            }
+
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "error");
+            }
+        }) {
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                return content.getBytes();
+            }
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
     /**
