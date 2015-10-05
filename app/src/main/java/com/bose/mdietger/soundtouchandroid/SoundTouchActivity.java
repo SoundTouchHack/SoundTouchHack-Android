@@ -6,16 +6,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bose.mdietger.soundtouchandroid.http.DefaultResponseErrorListener;
+import com.bose.mdietger.soundtouchandroid.http.DefaultResponseListener;
 import com.bose.mdietger.soundtouchandroid.http.DeviceManager;
-import com.bose.mdietger.soundtouchandroid.http.DoGetAsyncHttpResponseHandler;
-import com.bose.mdietger.soundtouchandroid.http.DoPostAsyncHttpResponseHandler;
 import com.bose.mdietger.soundtouchandroid.http.SoundTouchDeviceManager;
-import com.bose.mdietger.soundtouchandroid.http.volume.DoGetVolumeAsyncHttpResponseHandler;
 import com.bose.mdietger.soundtouchandroid.http.volume.Volume;
 import com.bose.mdietger.soundtouchandroid.http.volume.VolumeCallback;
 import com.bose.mdietger.soundtouchandroid.http.volume.VolumeResponse;
+import com.bose.mdietger.soundtouchandroid.http.volume.VolumeResponseListener;
 import com.bose.mdietger.soundtouchandroid.soundtouch.SoundTouch;
 
+/**
+ * SoundTouchActivity class. Activity for controlling the SoundTouch device.
+ */
 public class SoundTouchActivity extends AppCompatActivity implements VolumeCallback {
 
     private static final String TAG = "SoundTouchActivity";
@@ -29,33 +32,49 @@ public class SoundTouchActivity extends AppCompatActivity implements VolumeCallb
 
         SoundTouch device = getIntent().getParcelableExtra("STObject");
 
-        TextView STNaam = (TextView) findViewById(R.id.soundTouchDetailName);
-        TextView STIP = (TextView) findViewById(R.id.soundTouchDetailIP);
+        TextView tvName = (TextView) findViewById(R.id.soundTouchDetailName);
+        tvName.setText(device.getName());
 
-        STNaam.setText(device.getName());
-        STIP.setText(device.getIp());
+        TextView tvIP = (TextView) findViewById(R.id.soundTouchDetailIP);
+        tvIP.setText(device.getIp());
 
         deviceManager = new SoundTouchDeviceManager(device);
-        deviceManager.getVolume(new DoGetVolumeAsyncHttpResponseHandler(this));
+        deviceManager.getVolume(new VolumeResponseListener(this), new DefaultResponseErrorListener());
     }
 
-    private Integer volume;
+    // ----------------------------------------------------------------------------------------------- VOLUME
+
+    private static final Integer INCREMENT = new Integer(5);
+
+    private Integer volume = new Integer(35);
 
     @Override
     public void setVolume(VolumeResponse volume) {
         this.volume = volume.getActualVolume();
     }
 
+    /**
+     * Click volumeUp.
+     * @param v the view
+     */
     public void volumeUp(View v) {
         Log.d(TAG, "Volume Up");
-        Volume volume = new Volume("40");
-        deviceManager.setVolume(volume, new DoPostAsyncHttpResponseHandler());
+
+        volume = volume + INCREMENT;
+        Volume vol = new Volume(String.valueOf(volume));
+        deviceManager.setVolume(vol, new DefaultResponseListener(), new DefaultResponseErrorListener());
     }
 
+    /**
+     * Click volumeDown
+     * @param v the view
+     */
     public void volumeDown(View v) {
         Log.d(TAG, "Volume Down");
-        Volume volume = new Volume("30");
-        deviceManager.setVolume(volume, new DoGetAsyncHttpResponseHandler());
+
+        volume = volume - INCREMENT;
+        Volume vol = new Volume(String.valueOf(volume));
+        deviceManager.setVolume(vol, new DefaultResponseListener(), new DefaultResponseErrorListener());
     }
 
 }

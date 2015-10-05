@@ -7,14 +7,20 @@ import android.util.Log;
 import com.bose.mdietger.soundtouchandroid.soundtouch.SoundTouch;
 
 /**
- * Created by dm828586 on 5/10/2015.
+ * SoundTouchResolveListener class. This class is used as listener in the
+ * DiscoveryListener and can resolve the SoundTouch device services.
  */
 public class SoundTouchResolveListener implements NsdManager.ResolveListener {
 
     private static final String TAG = "SoundTouchDiscoverer";
+
     private NsdServiceInfo mServiceInfo;
     private DeviceHandler deviceHandler;
 
+    /**
+     * Instantiates a new SoundTouchResolveListener.
+     * @param deviceHandler the deviceHandler
+     */
     public SoundTouchResolveListener(DeviceHandler deviceHandler) {
         this.deviceHandler = deviceHandler;
     }
@@ -25,8 +31,6 @@ public class SoundTouchResolveListener implements NsdManager.ResolveListener {
 
         // on failure.. retry
         //mNsdManager.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, mDiscoveryListener);
-
-        Log.d(TAG, "Could not resolve device");
     }
 
     @Override

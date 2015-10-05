@@ -45,25 +45,6 @@ public class MainActivity extends AppCompatActivity {
         discoverer = new SoundTouchDiscoverer(getApplicationContext(), deviceHandler);
         discoverer.start();
 
-        SoundTouch st1 = new SoundTouch("Hallo", "192.168.0.123");
-        SoundTouch st2 = new SoundTouch("Hallo", "192.168.0.123");
-
-        if(st1.equals(st2)){
-            Log.d(TAG, "Whoo");
-        }else{
-            Log.d(TAG, "Booh");
-        }
-
-        populateListView();
-    }
-
-    /**
-     * Click Refresh.
-     * @param view the View
-     */
-    public void refresh(View view) {
-        Log.d(TAG, "Refresh list of devices");
-
         populateListView();
     }
 

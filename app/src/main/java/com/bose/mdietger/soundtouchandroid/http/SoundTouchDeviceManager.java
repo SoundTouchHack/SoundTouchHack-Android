@@ -10,8 +10,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.bose.mdietger.soundtouchandroid.AppController;
 import com.bose.mdietger.soundtouchandroid.http.volume.Volume;
 import com.bose.mdietger.soundtouchandroid.soundtouch.SoundTouch;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 
 /**
  * SoundTouchDeviceManager class. This class is reponsible for interactions
@@ -20,11 +18,11 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 public class SoundTouchDeviceManager implements DeviceManager {
 
     private static final String TAG = "SoundTouchDeviceManager";
+    private static final String PROTOCOL = "http://";
+    private static final String COLON = ":";
     private static final String PORT = "8090";
 
     private SoundTouch device;
-
-    private AsyncHttpClient client = new AsyncHttpClient();
 
     /**
      * Instantiates a new SoundTouchDeviceManager.
@@ -32,45 +30,35 @@ public class SoundTouchDeviceManager implements DeviceManager {
      */
     public SoundTouchDeviceManager(SoundTouch device) {
         this.device = device;
-        this.client = new AsyncHttpClient();
+    }
+
+    // ----------------------------------------------------------------------------------------------- VOLUME
+
+    private static final String VOLUME = "/volume";
+
+    @Override
+    public void getVolume(Response.Listener responseListener, Response.ErrorListener errorListener) {
+        Log.d(TAG, "getVolume");
+        doGet(VOLUME, responseListener, errorListener);
     }
 
     @Override
-    public void getVolume(AsyncHttpResponseHandler responseHandler) {
-        doGet("/volume", responseHandler);
-    }
-
-    @Override
-    public void setVolume(Volume volumeLevel, AsyncHttpResponseHandler responseHandler) {
+    public void setVolume(Volume volumeLevel, Response.Listener responseListener, Response.ErrorListener errorListener) {
+        Log.d(TAG, "setVolume");
         String dataXml = XmlMarshaller.getInstance().marshall(volumeLevel);
-        doPost("/volume", dataXml, responseHandler);
+        doPost(VOLUME, dataXml, responseListener, errorListener);
     }
 
     /**
      * Do GET to url with path.
      * @param path the path
-     * @param responseHandler the responseHandler
+     * @param responseListener the responseListener
+     * @param errorListener the errorListener
      * @return String the response
      */
-    void doGet(String path, AsyncHttpResponseHandler responseHandler) {
+    void doGet(String path, Response.Listener responseListener, Response.ErrorListener errorListener) {
         String  tag_string_req = "string_req";
-
-        StringRequest strReq = new StringRequest(Request.Method.GET,
-                getAbsoluteUrl(path), new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, response.toString());
-            }
-
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "error");
-            }
-        });
-
+        StringRequest strReq = new StringRequest(Request.Method.GET, getAbsoluteUrl(path), responseListener, errorListener);
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
@@ -78,34 +66,19 @@ public class SoundTouchDeviceManager implements DeviceManager {
      * Do POST to url with path.
      * @param path the path
      * @param content the content
-     * @param responseHandler the responseHandler
+     * @param responseListener the responseListener
+     * @param errorListener the errorListener
      */
-    void doPost(String path, final String content, AsyncHttpResponseHandler responseHandler) {
+    void doPost(String path, final String content, Response.Listener responseListener, Response.ErrorListener errorListener) {
         String  tag_string_req = "string_req";
-
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                getAbsoluteUrl(path), new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, response.toString());
-            }
-
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "error");
-            }
-        }) {
+        StringRequest strReq = new StringRequest(Request.Method.POST, getAbsoluteUrl(path), responseListener, errorListener) {
 
             @Override
             public byte[] getBody() throws AuthFailureError {
                 return content.getBytes();
             }
-        };
 
-        // Adding request to request queue
+        };
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
@@ -115,7 +88,7 @@ public class SoundTouchDeviceManager implements DeviceManager {
      * @return String the absolute url
      */
     String getAbsoluteUrl(String path) {
-        return "http://" + device.getIp() + ":" + PORT + path;
+        return PROTOCOL + device.getIp() + COLON + PORT + path;
     }
 
 }

@@ -5,27 +5,37 @@ import android.text.TextUtils;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
+/**
+ * AppController class. Singleton Application Controller class that holds Volley's
+ * requestQueue's for making HTTP requests.
+ */
 public class AppController extends Application {
 
     public static final String TAG = "AppController";
 
     private RequestQueue mRequestQueue;
 
-    private static AppController mInstance;
+    private static AppController instance;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mInstance = this;
+        instance = this;
     }
 
+    /**
+     * Get AppController isntance.
+     * @return AppController the AppController
+     */
     public static synchronized AppController getInstance() {
-        return mInstance;
+        return instance;
     }
 
+    /**
+     * @return RequestQueue the RequestQueue
+     */
     public RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {
             mRequestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -34,17 +44,31 @@ public class AppController extends Application {
         return mRequestQueue;
     }
 
-    public <T> void addToRequestQueue(Request<T> req, String tag) {
-        // set the default tag if tag is empty
-        req.setTag(TextUtils.isEmpty(tag) ? TAG : tag);
-        getRequestQueue().add(req);
+    /**
+     * Add request to queue.
+     * @param request the request
+     * @param tag the tag
+     * @param <T> the type
+     */
+    public <T> void addToRequestQueue(Request<T> request, String tag) {
+        request.setTag(TextUtils.isEmpty(tag) ? TAG : tag);
+        getRequestQueue().add(request);
     }
 
-    public <T> void addToRequestQueue(Request<T> req) {
-        req.setTag(TAG);
-        getRequestQueue().add(req);
+    /**
+     * Add request to queue.
+     * @param request the request
+     * @param <T> the type
+     */
+    public <T> void addToRequestQueue(Request<T> request) {
+        request.setTag(TAG);
+        getRequestQueue().add(request);
     }
 
+    /**
+     * Cancel all pending requests on queue.
+     * @param tag the tag
+     */
     public void cancelPendingRequests(Object tag) {
         if (mRequestQueue != null) {
             mRequestQueue.cancelAll(tag);
