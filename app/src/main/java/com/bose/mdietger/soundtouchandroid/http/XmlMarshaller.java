@@ -8,6 +8,7 @@ import com.bose.mdietger.soundtouchandroid.http.volume.Volume;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 /**
@@ -25,6 +26,24 @@ public class XmlMarshaller {
             marshaller = new XmlMarshaller();
         }
         return marshaller;
+    }
+
+    /**
+     * Unmarshalls an Xml to Java obj.
+     * @param type the Class type
+     * @param xml the xml to unmarshall
+     * @param <T> the type
+     * @return T the object
+     */
+    public <T> T unmarshall(Class<T> type, String xml) {
+        try {
+            Serializer serializer = new Persister();
+            T t = serializer.read(type, new ByteArrayInputStream(xml.getBytes("UTF-8")));
+            return t;
+        } catch (Exception e) {
+            Log.e(TAG, "error unmarshalling xml: " + e.getMessage());
+            return null;
+        }
     }
 
     /**

@@ -9,7 +9,6 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import java.io.UnsupportedEncodingException;
 
-import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import cz.msebera.android.httpclient.protocol.HTTP;
@@ -37,17 +36,33 @@ public class SoundTouchDeviceManager implements DeviceManager {
     }
 
     @Override
-    public void setVolume(Volume volumeLevel) {
+    public void getVolume(AsyncHttpResponseHandler responseHandler) {
+        doGet("/volume", responseHandler);
+    }
+
+    @Override
+    public void setVolume(Volume volumeLevel, AsyncHttpResponseHandler responseHandler) {
         String dataXml = XmlMarshaller.getInstance().marshall(volumeLevel);
-        doPost("/volume", dataXml);
+        doPost("/volume", dataXml, responseHandler);
+    }
+
+    /**
+     * Do GET to url with path.
+     * @param path the path
+     * @param responseHandler the responseHandler
+     * @return String the response
+     */
+    void doGet(String path, AsyncHttpResponseHandler responseHandler) {
+        client.get(null, getAbsoluteUrl(path), null, "application/xml", responseHandler);
     }
 
     /**
      * Do POST to url with path.
      * @param path the path
      * @param content the content
+     * @param responseHandler the responseHandler
      */
-    void doPost(String path, String content) {
+    void doPost(String path, String content, AsyncHttpResponseHandler responseHandler) {
         StringEntity data = null;
         try {
             data = new StringEntity(content);
@@ -57,19 +72,7 @@ public class SoundTouchDeviceManager implements DeviceManager {
             return;
         }
 
-        client.post(null, getAbsoluteUrl(path), data, "application/xml", new AsyncHttpResponseHandler() {
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Log.d(TAG, "Success");
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.d(TAG, "Failed");
-            }
-
-        });
+        client.post(null, getAbsoluteUrl(path), data, "application/xml", responseHandler);
     }
 
     /**

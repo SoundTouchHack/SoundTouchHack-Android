@@ -7,11 +7,16 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.bose.mdietger.soundtouchandroid.http.DeviceManager;
+import com.bose.mdietger.soundtouchandroid.http.DoGetAsyncHttpResponseHandler;
+import com.bose.mdietger.soundtouchandroid.http.DoPostAsyncHttpResponseHandler;
 import com.bose.mdietger.soundtouchandroid.http.SoundTouchDeviceManager;
+import com.bose.mdietger.soundtouchandroid.http.volume.DoGetVolumeAsyncHttpResponseHandler;
 import com.bose.mdietger.soundtouchandroid.http.volume.Volume;
+import com.bose.mdietger.soundtouchandroid.http.volume.VolumeCallback;
+import com.bose.mdietger.soundtouchandroid.http.volume.VolumeResponse;
 import com.bose.mdietger.soundtouchandroid.soundtouch.SoundTouch;
 
-public class SoundTouchActivity extends AppCompatActivity {
+public class SoundTouchActivity extends AppCompatActivity implements VolumeCallback {
 
     private static final String TAG = "SoundTouchActivity";
 
@@ -31,18 +36,26 @@ public class SoundTouchActivity extends AppCompatActivity {
         STIP.setText(device.get_ip());
 
         deviceManager = new SoundTouchDeviceManager(device);
+        deviceManager.getVolume(new DoGetVolumeAsyncHttpResponseHandler(this));
+    }
+
+    private Integer volume;
+
+    @Override
+    public void setVolume(VolumeResponse volume) {
+        this.volume = volume.getActualVolume();
     }
 
     public void volumeUp(View v) {
         Log.d(TAG, "Volume Up");
         Volume volume = new Volume("40");
-        deviceManager.setVolume(volume);
+        deviceManager.setVolume(volume, new DoPostAsyncHttpResponseHandler());
     }
 
     public void volumeDown(View v) {
         Log.d(TAG, "Volume Down");
         Volume volume = new Volume("30");
-        deviceManager.setVolume(volume);
+        deviceManager.setVolume(volume, new DoGetAsyncHttpResponseHandler());
     }
 
 }
