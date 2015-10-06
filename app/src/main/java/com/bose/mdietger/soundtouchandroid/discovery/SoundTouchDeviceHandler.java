@@ -48,4 +48,5 @@ public class SoundTouchDeviceHandler implements DeviceHandler<SoundTouch> {
         this.devices.add(device);
         this.updateDeviceListCallback.update();
     }
+
 }

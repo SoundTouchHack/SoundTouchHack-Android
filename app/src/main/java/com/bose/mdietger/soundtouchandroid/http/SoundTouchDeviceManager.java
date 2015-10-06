@@ -5,6 +5,13 @@ import android.util.Log;
 import com.android.volley.Response;
 import com.bose.mdietger.soundtouchandroid.http.volume.Volume;
 import com.bose.mdietger.soundtouchandroid.soundtouch.SoundTouch;
+import com.bose.mdietger.soundtouchandroid.websockets.WebSocketConnector;
+
+import org.java_websocket.drafts.Draft_17;
+
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * SoundTouchDeviceManager class. This class is reponsible for interactions
@@ -14,9 +21,14 @@ public class SoundTouchDeviceManager extends AbstractDeviceManager<SoundTouch> i
 
     private static final String TAG = "SoundTouchDeviceManager";
 
-    private static final String PROTOCOL = "http://";
+    private static final String HTTP_PROTOCOL = "http://";
+    private static final String HTTP_PORT = "8090";
+
+    private static final String WS_PROTOCOL = "ws://";
+    private static final String WS_PORT = "8080";
+
     private static final String COLON = ":";
-    private static final String PORT = "8090";
+
 
     /**
      * Instantiates a new SoundTouchDeviceManager.
@@ -28,7 +40,26 @@ public class SoundTouchDeviceManager extends AbstractDeviceManager<SoundTouch> i
 
     @Override
     protected String getAbsoluteUrl(String path) {
-        return PROTOCOL + device.getIp() + COLON + PORT + path;
+        return HTTP_PROTOCOL + device.getIp() + COLON + HTTP_PORT + path;
+    }
+
+    // ----------------------------------------------------------------------------------------------- MESSAGES (WEBSOCKETS)
+
+    @Override
+    public void listenForMessages() {
+        try {
+            URI uri = new URI(WS_PROTOCOL + device.getIp() + COLON + WS_PORT);
+
+            Map<String,String> headers = new HashMap<String, String>();
+            headers.put("Sec-WebSocket-Protocol","gabbo");
+
+            WebSocketConnector connector = new WebSocketConnector(uri, new Draft_17(), headers, 5000);
+            connector.connect();
+
+            Log.d(TAG, "Listening for messages");
+        } catch(Exception e) {
+            Log.e(TAG, "Error listening for messages: " + e.getMessage());
+        }
     }
 
     // ----------------------------------------------------------------------------------------------- VOLUME

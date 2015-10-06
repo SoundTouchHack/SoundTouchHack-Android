@@ -33,7 +33,6 @@ public class SoundTouchActivity extends AppCompatActivity implements VolumeCallb
     private static final String TAG = "SoundTouchActivity";
 
     private DeviceManager deviceManager;
-    private WebSocketClient wsc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,18 +47,8 @@ public class SoundTouchActivity extends AppCompatActivity implements VolumeCallb
         TextView tvIP = (TextView) findViewById(R.id.soundTouchDetailIP);
         tvIP.setText(device.getIp());
 
-        Map<String,String> headers = new HashMap<String, String>();
-        headers.put("Sec-WebSocket-Protocol","gabbo");
-
-        try{
-            wsc = new WebSocketConnector(new URI("ws://"+device.getIp()+":8080"), new Draft_17(), headers, 5000);
-            wsc.connect();
-        }catch(Exception e){
-            Log.d(TAG, e.getMessage());
-        }
-
-
         deviceManager = new SoundTouchDeviceManager(device);
+        deviceManager.listenForMessages();
         deviceManager.getVolume(new VolumeResponseListener(this), new DefaultResponseErrorListener());
     }
 

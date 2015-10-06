@@ -12,40 +12,55 @@ import java.util.Map;
 
 
 /**
- * Created by mdiet on 5/10/2015.
+ * WebSocketConnector class. This class is used to connect and listen
+ * for WebSocket messages.
  */
 public class WebSocketConnector extends WebSocketClient {
 
-    public WebSocketConnector( URI serverUri , Draft draft , Map<String,String> headers , int connecttimeout ){
-        super(serverUri, draft, headers, connecttimeout);
-    }
+    private static final String TAG = "WebSocketConnector";
 
-    public WebSocketConnector(URI serverUri, Draft draft) {
-        super(serverUri, draft);
-    }
+    private static final String PROTOCOL = "ws://";
+    private static final String COLON = ":";
+    private static final String PORT = "8080";
 
-    public WebSocketConnector(URI serverURI) {
-        super(serverURI);
+    /**
+     * Instantiates a new WebSocketConnector.
+     * @param serverUri the serverUri
+     * @param draft the draft
+     * @param headers the headers
+     * @param timeout the connect timeout
+     */
+    public WebSocketConnector(URI serverUri , Draft draft , Map<String,String> headers , int timeout ) {
+        super(serverUri, draft, headers, timeout);
     }
-
 
     @Override
     public void onOpen(ServerHandshake handshakedata) {
-        Log.i("Websocket", "Opened");
+        Log.i(TAG, "Opened");
     }
 
     @Override
     public void onMessage(String message) {
-        Log.i("Websocket", "Message " + message);
+        Log.i(TAG, "Message " + message);
     }
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
-        Log.i("Websocket", "Closed " + reason);
+        Log.i(TAG, "Closed " + reason);
     }
 
     @Override
     public void onError(Exception ex) {
-        Log.i("Websocket", "Error " + ex.getMessage());
+        Log.i(TAG, "Error " + ex.getMessage());
     }
+
+    /**
+     * Get absolute WebSocket url.
+     * @param ip the ip address
+     * @return String the absolute url
+     */
+    String getAbsoluteUrl(String ip) {
+        return PROTOCOL + ip + COLON + PORT;
+    }
+
 }
