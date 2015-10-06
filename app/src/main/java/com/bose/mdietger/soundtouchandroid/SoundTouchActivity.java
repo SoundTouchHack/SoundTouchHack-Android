@@ -26,9 +26,6 @@ public class SoundTouchActivity extends AppCompatActivity implements VolumeCallb
 
     private DeviceManager deviceManager;
 
-    private static final Integer INCREMENT = new Integer(5);
-    private Integer volume = new Integer(35);
-
     private TextView tvVolume;
     private SeekBar sbVolume;
 
@@ -56,33 +53,8 @@ public class SoundTouchActivity extends AppCompatActivity implements VolumeCallb
 
     @Override
     public void setVolume(VolumeResponse volume) {
-        this.volume = volume.getActualVolume();
-        tvVolume.setText(this.volume.toString());
-        sbVolume.setProgress(this.volume);
-    }
-
-    /**
-     * Click volumeUp.
-     * @param v the view
-     */
-    public void volumeUp(View v) {
-        Log.d(TAG, "Volume Up");
-
-        volume = volume + INCREMENT;
-        Volume vol = new Volume(String.valueOf(volume));
-        deviceManager.setVolume(vol, new DefaultResponseListener(), new DefaultResponseErrorListener());
-    }
-
-    /**
-     * Click volumeDown
-     * @param v the view
-     */
-    public void volumeDown(View v) {
-        Log.d(TAG, "Volume Down");
-
-        volume = volume - INCREMENT;
-        Volume vol = new Volume(String.valueOf(volume));
-        deviceManager.setVolume(vol, new DefaultResponseListener(), new DefaultResponseErrorListener());
+        tvVolume.setText(volume.getActualVolume().toString());
+        sbVolume.setProgress(volume.getActualVolume());
     }
 
     private class VolumeChangeHandler implements SeekBar.OnSeekBarChangeListener {
@@ -90,6 +62,8 @@ public class SoundTouchActivity extends AppCompatActivity implements VolumeCallb
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             tvVolume.setText(String.valueOf(progress));
+            Volume vol = new Volume(String.valueOf(progress));
+            deviceManager.setVolume(vol, new DefaultResponseListener(), new DefaultResponseErrorListener());
         }
 
         @Override
