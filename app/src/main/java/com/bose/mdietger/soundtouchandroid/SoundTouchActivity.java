@@ -52,7 +52,7 @@ public class SoundTouchActivity extends AppCompatActivity implements VolumeCallb
         headers.put("Sec-WebSocket-Protocol","gabbo");
 
         try{
-            wsc = new WebSocketConnector(new URI("ws://192.168.0.168:8080"), new Draft_17(), headers, 5000);
+            wsc = new WebSocketConnector(new URI("ws://"+device.getIp()+":8080"), new Draft_17(), headers, 5000);
             wsc.connect();
         }catch(Exception e){
             Log.d(TAG, e.getMessage());
