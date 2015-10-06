@@ -6,6 +6,8 @@ package com.bose.mdietger.soundtouchandroid.http.key;
 @Root
 public class Key {
 
+    public static final String SENDER = "Gabbo";
+
     @Attribute(name = "state")
     private String state;
 
