@@ -57,6 +57,24 @@ public class SoundTouchActivity extends AppCompatActivity implements VolumeCallb
         sbVolume.setProgress(volume.getActualVolume());
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        deviceManager.listenForMessages();
+    }
+
+    @Override
+    public void onPause() {
+        deviceManager.stopListenForMessages();
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        deviceManager.stopListenForMessages();
+        super.onDestroy();
+    }
+
     private class VolumeChangeHandler implements SeekBar.OnSeekBarChangeListener {
 
         @Override

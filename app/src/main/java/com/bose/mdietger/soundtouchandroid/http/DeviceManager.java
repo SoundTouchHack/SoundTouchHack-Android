@@ -13,6 +13,7 @@ public interface DeviceManager {
      * Start listening for messages from device.
      */
     void listenForMessages();
+    void stopListenForMessages();
 
     /**
      * Get the current volume level.

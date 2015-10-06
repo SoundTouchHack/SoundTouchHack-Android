@@ -29,6 +29,8 @@ public class SoundTouchDeviceManager extends AbstractDeviceManager<SoundTouch> i
 
     private static final String COLON = ":";
 
+    private WebSocketConnector connector;
+
 
     /**
      * Instantiates a new SoundTouchDeviceManager.
@@ -51,15 +53,24 @@ public class SoundTouchDeviceManager extends AbstractDeviceManager<SoundTouch> i
             URI uri = new URI(WS_PROTOCOL + device.getIp() + COLON + WS_PORT);
 
             Map<String,String> headers = new HashMap<String, String>();
-            headers.put("Sec-WebSocket-Protocol","gabbo");
+            headers.put("Sec-WebSocket-Protocol", "gabbo");
 
-            WebSocketConnector connector = new WebSocketConnector(uri, new Draft_17(), headers, 5000);
+            connector = new WebSocketConnector(uri, new Draft_17(), headers, 5000);
             connector.connect();
 
             Log.d(TAG, "Listening for messages");
         } catch(Exception e) {
             Log.e(TAG, "Error listening for messages: " + e.getMessage());
         }
+    }
+
+    @Override
+    public void stopListenForMessages() {
+        if(connector == null) {
+            return;
+        }
+
+        connector.close();
     }
 
     // ----------------------------------------------------------------------------------------------- VOLUME
