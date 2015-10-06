@@ -19,6 +19,10 @@ public class SoundTouchDeviceHandler implements DeviceHandler<SoundTouch> {
     private List<SoundTouch> devices;
     private UpdateDeviceListCallback updateDeviceListCallback;
 
+    /**
+     * Instantiates a new SoundTouchDeviceHandler.
+     * @param updateDeviceListCallback the updateDeviceListCallback
+     */
     public SoundTouchDeviceHandler(UpdateDeviceListCallback updateDeviceListCallback) {
         this.updateDeviceListCallback = updateDeviceListCallback;
     }
