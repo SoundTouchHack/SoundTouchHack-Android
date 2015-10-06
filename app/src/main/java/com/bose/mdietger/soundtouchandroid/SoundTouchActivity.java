@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bose.mdietger.soundtouchandroid.http.DefaultResponseErrorListener;
@@ -15,15 +16,6 @@ import com.bose.mdietger.soundtouchandroid.http.volume.VolumeCallback;
 import com.bose.mdietger.soundtouchandroid.http.volume.VolumeResponse;
 import com.bose.mdietger.soundtouchandroid.http.volume.VolumeResponseListener;
 import com.bose.mdietger.soundtouchandroid.soundtouch.SoundTouch;
-import com.bose.mdietger.soundtouchandroid.websockets.WebSocketConnector;
-
-import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.drafts.Draft_10;
-import org.java_websocket.drafts.Draft_17;
-
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * SoundTouchActivity class. Activity for controlling the SoundTouch device.
@@ -34,6 +26,12 @@ public class SoundTouchActivity extends AppCompatActivity implements VolumeCallb
 
     private DeviceManager deviceManager;
 
+    private static final Integer INCREMENT = new Integer(5);
+    private Integer volume = new Integer(35);
+
+    private TextView tvVolume;
+    private SeekBar sbVolume;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,26 +39,26 @@ public class SoundTouchActivity extends AppCompatActivity implements VolumeCallb
 
         SoundTouch device = getIntent().getParcelableExtra("STObject");
 
-        TextView tvName = (TextView) findViewById(R.id.soundTouchDetailName);
-        tvName.setText(device.getName());
+        setTitle(device.getName());
 
         TextView tvIP = (TextView) findViewById(R.id.soundTouchDetailIP);
         tvIP.setText(device.getIp());
+
+        tvVolume = (TextView) findViewById(R.id.tvVolumeValue);
+        sbVolume = (SeekBar) findViewById(R.id.sbVolume);
+
+        sbVolume.setOnSeekBarChangeListener(new VolumeChangeHandler());
 
         deviceManager = new SoundTouchDeviceManager(device);
         deviceManager.listenForMessages();
         deviceManager.getVolume(new VolumeResponseListener(this), new DefaultResponseErrorListener());
     }
 
-    // ----------------------------------------------------------------------------------------------- VOLUME
-
-    private static final Integer INCREMENT = new Integer(5);
-
-    private Integer volume = new Integer(35);
-
     @Override
     public void setVolume(VolumeResponse volume) {
         this.volume = volume.getActualVolume();
+        tvVolume.setText(this.volume.toString());
+        sbVolume.setProgress(this.volume);
     }
 
     /**
@@ -85,6 +83,24 @@ public class SoundTouchActivity extends AppCompatActivity implements VolumeCallb
         volume = volume - INCREMENT;
         Volume vol = new Volume(String.valueOf(volume));
         deviceManager.setVolume(vol, new DefaultResponseListener(), new DefaultResponseErrorListener());
+    }
+
+    private class VolumeChangeHandler implements SeekBar.OnSeekBarChangeListener {
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            tvVolume.setText(String.valueOf(progress));
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
+        }
     }
 
 }

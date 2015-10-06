@@ -1,46 +1,151 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="16dp"
     tools:context="com.bose.mdietger.soundtouchandroid.SoundTouchActivity">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:gravity="center"
+        android:id="@+id/soundTouchDetailIP"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/generalButtons">
+
+        <Button
+            android:id="@+id/btnPower"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:text="@string/power"
+            android:layout_weight="1.0" />
+
+        <Button
+            android:id="@+id/btnSource"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:text="@string/source"
+            android:layout_weight="1.0" />
+
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/soundTouchDetailName" />
+        android:text="@string/presets"
+        android:id="@+id/tvPresets"
+        android:layout_below="@+id/generalButtons"
+        android:layout_marginTop="20dip"
+        android:paddingLeft="2dip"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvPresets"
+        android:id="@+id/presetBar1"
+        android:layout_marginTop="10dip">
+
+        <Button
+            android:id="@+id/btnPreset1"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:text="1"
+            android:layout_weight="1.0" />
+
+        <Button
+            android:id="@+id/btnPreset2"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:text="2"
+            android:layout_weight="1.0" />
+
+        <Button
+            android:id="@+id/btnPreset3"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:text="3"
+            android:layout_weight="1.0" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/presetBar1"
+        android:id="@+id/presetBar2"
+        android:layout_marginBottom="10dip">
+
+        <Button
+            android:id="@+id/btnPreset4"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:text="4"
+            android:layout_weight="1.0" />
+
+        <Button
+            android:id="@+id/btnPreset5"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:text="5"
+            android:layout_weight="1.0" />
+
+        <Button
+            android:id="@+id/btnPreset6"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:text="6"
+            android:layout_weight="1.0" />
+
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:id="@+id/soundTouchDetailIP"
-        android:layout_below="@+id/soundTouchDetailName"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/volume"
+        android:id="@+id/tvVolume"
+        android:layout_below="@+id/presetBar2"
+        android:layout_marginTop="20dip"
+        android:paddingLeft="3dip" />
 
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/volume_up"
-        android:id="@+id/btnVolumeUp"
-        android:layout_below="@+id/soundTouchDetailIP"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="volumeUp"/>
+        android:layout_below="@+id/tvVolume"
+        android:layout_marginTop="10dip"
+        android:layout_marginBottom="10dip"
+        android:id="@+id/llVolume">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/volume_down"
-        android:id="@+id/btnVolumeDown"
-        android:layout_below="@+id/btnVolumeUp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="volumeDown"/>
+
+        <SeekBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sbVolume"
+            android:max="100"
+            android:layout_weight="1.0" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="100"
+            android:gravity="center"
+            android:id="@+id/tvVolumeValue" />
+
+    </LinearLayout>
+
 </RelativeLayout>
