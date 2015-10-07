@@ -76,22 +76,28 @@ public class SoundTouchActivity extends AppCompatActivity implements VolumeCallb
     public void onPresetButtonPressed(View v) {
         switch (v.getId()) {
             case R.id.btnPreset1:
-                //Button 1 pressed
+                Log.d(TAG, "Click Preset 1");
+                deviceManager.clickPreset(KeyValue.PRESET_1.toString(),new DefaultResponseListener(), new DefaultResponseErrorListener());
                 break;
             case R.id.btnPreset2:
-                //Button 2 pressed
+                Log.d(TAG, "Click Preset 1");
+                deviceManager.clickPreset(KeyValue.PRESET_2.toString(),new DefaultResponseListener(), new DefaultResponseErrorListener());
                 break;
             case R.id.btnPreset3:
-                //Button 3 pressed
+                Log.d(TAG, "Click Preset 1");
+                deviceManager.clickPreset(KeyValue.PRESET_3.toString(),new DefaultResponseListener(), new DefaultResponseErrorListener());
                 break;
             case R.id.btnPreset4:
-                //Button 4 pressed
+                Log.d(TAG, "Click Preset 1");
+                deviceManager.clickPreset(KeyValue.PRESET_4.toString(),new DefaultResponseListener(), new DefaultResponseErrorListener());
                 break;
             case R.id.btnPreset5:
-                //Button 5 pressed
+                Log.d(TAG, "Click Preset 1");
+                deviceManager.clickPreset(KeyValue.PRESET_5.toString(),new DefaultResponseListener(), new DefaultResponseErrorListener());
                 break;
             case R.id.btnPreset6:
-                //Button 6 pressed
+                Log.d(TAG, "Click Preset 1");
+                deviceManager.clickPreset(KeyValue.PRESET_6.toString(),new DefaultResponseListener(), new DefaultResponseErrorListener());
                 break;
         }
     }

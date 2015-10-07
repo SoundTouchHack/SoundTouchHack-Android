@@ -39,4 +39,12 @@ public interface DeviceManager {
      */
     void togglePower(Response.Listener responseListener, Response.ErrorListener errorListener);
 
+    /**
+     * Click the preset 1 button
+     * @param presetNumber the preset button
+     * @param responseListener the responseListener
+     * @param errorListener the errorListener
+     */
+    void clickPreset(String presetNumber, Response.Listener responseListener, Response.ErrorListener errorListener);
+
 }

@@ -107,6 +107,17 @@ public class SoundTouchDeviceManager extends AbstractDeviceManager<SoundTouch> i
         doPost(KEY, dataXml, responseListener, errorListener);
     }
 
+    @Override
+    public void clickPreset(String presetNumber, Response.Listener responseListener, Response.ErrorListener errorListener) {
+        Log.d(TAG, "Click Preset button: " + presetNumber);
+        Key keyPress = new Key(KeyState.press.toString(), Key.SENDER.toString(), presetNumber);
+        Key keyRelease = new Key(KeyState.release.toString(), Key.SENDER.toString(), presetNumber);
 
+        String dataXml = XmlMarshaller.getInstance().marshall(keyPress);
+        doPost(KEY, dataXml, responseListener, errorListener);
+
+        dataXml = XmlMarshaller.getInstance().marshall(keyRelease);
+        doPost(KEY, dataXml, responseListener, errorListener);
+    }
 
 }
