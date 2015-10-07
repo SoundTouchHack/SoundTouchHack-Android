@@ -82,6 +82,10 @@ public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdat
 
     }
 
+    /**
+     * One of the preset buttons has been pressend
+     * @param v the view
+     */
     public void onPresetButtonPressed(View v) {
         switch (v.getId()) {
             case R.id.btnPreset1:
@@ -114,7 +118,9 @@ public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdat
     @Override
     protected void onResume() {
         super.onResume();
-        deviceManager.listenForMessages(this);
+        if(!deviceManager.isListening()){
+            deviceManager.listenForMessages(this);
+        }
     }
 
     @Override
@@ -125,8 +131,14 @@ public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdat
 
     @Override
     protected void onDestroy() {
-        deviceManager.stopListenForMessages();
+        if(deviceManager.isListening()){
+            deviceManager.stopListenForMessages();
+        }
         super.onDestroy();
+    }
+
+    private void listen() {
+        deviceManager.listenForMessages(this);
     }
 
     private class VolumeChangeHandler implements SeekBar.OnSeekBarChangeListener {
@@ -142,12 +154,15 @@ public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdat
 
         @Override
         public void onStartTrackingTouch(SeekBar seekBar) {
-
+            deviceManager.stopListenForMessages();
         }
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-
+            tvVolume.setText(String.valueOf(seekBar.getProgress()));
+            Volume vol = new Volume(String.valueOf(seekBar.getProgress()));
+            deviceManager.setVolume(vol, new DefaultResponseListener(), new DefaultResponseErrorListener());
+            listen();
         }
     }
 

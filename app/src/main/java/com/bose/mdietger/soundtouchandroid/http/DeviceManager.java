@@ -18,6 +18,12 @@ public interface DeviceManager {
     void listenForMessages(DeviceUpdateCallback callback);
 
     /**
+     * Check if device is listening
+     * @return true if listening, false if not
+     */
+    boolean isListening();
+
+    /**
      * Stop listening for message from device.
      */
     void stopListenForMessages();

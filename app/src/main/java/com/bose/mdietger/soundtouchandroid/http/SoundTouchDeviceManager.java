@@ -11,6 +11,7 @@ import com.bose.mdietger.soundtouchandroid.soundtouch.SoundTouch;
 import com.bose.mdietger.soundtouchandroid.websockets.DeviceUpdateCallback;
 import com.bose.mdietger.soundtouchandroid.websockets.WebSocketConnector;
 
+import org.java_websocket.WebSocket;
 import org.java_websocket.drafts.Draft_17;
 
 import java.net.URI;
@@ -66,6 +67,14 @@ public class SoundTouchDeviceManager extends AbstractDeviceManager<SoundTouch> i
         } catch(Exception e) {
             Log.e(TAG, "Error listening for messages: " + e.getMessage());
         }
+    }
+
+    @Override
+    public boolean isListening() {
+        if(connector.getReadyState() == WebSocket.READYSTATE.CONNECTING || connector.getReadyState() == WebSocket.READYSTATE.OPEN || connector.getReadyState() == WebSocket.READYSTATE.NOT_YET_CONNECTED){
+            return true;
+        }
+        return false;
     }
 
     @Override

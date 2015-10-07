@@ -52,6 +52,7 @@ public abstract class AbstractDeviceManager<T> implements DeviceManager {
             }
 
         };
+        AppController.getInstance().cancelPendingRequests(tag_string_req);
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
