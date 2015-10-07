@@ -63,10 +63,20 @@ public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdat
         }
     }
 
+    /**
+     * http://stackoverflow.com/questions/5161951/android-only-the-original-thread-that-created-a-view-hierarchy-can-touch-its-vi
+     * @param volume the volume
+     */
     @Override
-    public void setVolume(Integer volume) {
-        tvVolume.setText(String.valueOf(volume));
-        sbVolume.setProgress(volume);
+    public void setVolume(final Integer volume) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tvVolume.setText(String.valueOf(volume));
+                sbVolume.setProgress(volume);
+            }
+        });
+
     }
 
     /**
