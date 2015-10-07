@@ -57,6 +57,10 @@ public class SoundTouchActivity extends AppCompatActivity implements VolumeCallb
         sbVolume.setProgress(volume.getActualVolume());
     }
 
+    public void onSelectPreset(View v){
+
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
