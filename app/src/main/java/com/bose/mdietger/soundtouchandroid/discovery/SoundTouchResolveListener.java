@@ -15,13 +15,20 @@ public class SoundTouchResolveListener implements NsdManager.ResolveListener {
     private static final String TAG = "SoundTouchDiscoverer";
 
     private NsdServiceInfo mServiceInfo;
+
+    private NsdManager mNsdManager;
+    private NsdManager.DiscoveryListener mDiscoveryListener;
     private DeviceHandler deviceHandler;
 
     /**
      * Instantiates a new SoundTouchResolveListener.
+     * @param mNsdManager the mNsdManager
+     * @param mDiscoveryListener the discoveryListener
      * @param deviceHandler the deviceHandler
      */
-    public SoundTouchResolveListener(DeviceHandler deviceHandler) {
+    public SoundTouchResolveListener(NsdManager mNsdManager, NsdManager.DiscoveryListener mDiscoveryListener, DeviceHandler deviceHandler) {
+        this.mNsdManager = mNsdManager;
+        this.mDiscoveryListener = mDiscoveryListener;
         this.deviceHandler = deviceHandler;
     }
 
@@ -30,7 +37,7 @@ public class SoundTouchResolveListener implements NsdManager.ResolveListener {
         Log.e(TAG, "Resolve failed " + errorCode);
 
         // on failure.. retry
-        //mNsdManager.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, mDiscoveryListener);
+        mNsdManager.discoverServices(SoundTouchDiscoverer.SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, mDiscoveryListener);
     }
 
     @Override
