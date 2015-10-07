@@ -28,14 +28,16 @@
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:text="@string/power"
-            android:layout_weight="1.0" />
+            android:layout_weight="1.0"
+            android:onClick="onPowerButtonPressed"/>
 
         <Button
             android:id="@+id/btnSource"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:text="@string/source"
-            android:layout_weight="1.0" />
+            android:layout_weight="1.0"
+            android:onClick="onSourceButtonPressed"/>
 
     </LinearLayout>
 
@@ -62,21 +64,24 @@
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:text="1"
-            android:layout_weight="1.0" />
+            android:layout_weight="1.0"
+            android:onClick="onPresetButtonPressed"/>
 
         <Button
             android:id="@+id/btnPreset2"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:text="2"
-            android:layout_weight="1.0" />
+            android:layout_weight="1.0"
+            android:onClick="onPresetButtonPressed"/>
 
         <Button
             android:id="@+id/btnPreset3"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:text="3"
-            android:layout_weight="1.0" />
+            android:layout_weight="1.0"
+            android:onClick="onPresetButtonPressed"/>
 
     </LinearLayout>
 
@@ -93,21 +98,24 @@
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:text="4"
-            android:layout_weight="1.0" />
+            android:layout_weight="1.0"
+            android:onClick="onPresetButtonPressed"/>
 
         <Button
             android:id="@+id/btnPreset5"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:text="5"
-            android:layout_weight="1.0" />
+            android:layout_weight="1.0"
+            android:onClick="onPresetButtonPressed"/>
 
         <Button
             android:id="@+id/btnPreset6"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:text="6"
-            android:layout_weight="1.0" />
+            android:layout_weight="1.0"
+            android:onClick="onPresetButtonPressed"/>
 
     </LinearLayout>
 
