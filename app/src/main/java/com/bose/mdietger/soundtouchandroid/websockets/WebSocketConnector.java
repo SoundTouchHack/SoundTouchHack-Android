@@ -2,6 +2,8 @@ package com.bose.mdietger.soundtouchandroid.websockets;
 
 import android.util.Log;
 
+import com.bose.mdietger.soundtouchandroid.http.XmlMarshaller;
+
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.handshake.ServerHandshake;
@@ -19,9 +21,7 @@ public class WebSocketConnector extends WebSocketClient {
 
     private static final String TAG = "WebSocketConnector";
 
-    private static final String PROTOCOL = "ws://";
-    private static final String COLON = ":";
-    private static final String PORT = "8080";
+    private DeviceUpdateCallback callback;
 
     /**
      * Instantiates a new WebSocketConnector.
@@ -29,9 +29,11 @@ public class WebSocketConnector extends WebSocketClient {
      * @param draft the draft
      * @param headers the headers
      * @param timeout the connect timeout
+     * @param callback the deviceUpdateCallback
      */
-    public WebSocketConnector(URI serverUri , Draft draft , Map<String,String> headers , int timeout ) {
+    public WebSocketConnector(URI serverUri , Draft draft , Map<String,String> headers , int timeout, DeviceUpdateCallback callback ) {
         super(serverUri, draft, headers, timeout);
+        this.callback = callback;
     }
 
     @Override
@@ -42,6 +44,9 @@ public class WebSocketConnector extends WebSocketClient {
     @Override
     public void onMessage(String message) {
         Log.i(TAG, "Message " + message);
+
+        DeviceUpdate deviceUpdate = XmlMarshaller.getInstance().unmarshall(DeviceUpdate.class, message);
+        callback.onMessage(deviceUpdate);
     }
 
     @Override
@@ -52,15 +57,6 @@ public class WebSocketConnector extends WebSocketClient {
     @Override
     public void onError(Exception ex) {
         Log.i(TAG, "Error " + ex.getMessage());
-    }
-
-    /**
-     * Get absolute WebSocket url.
-     * @param ip the ip address
-     * @return String the absolute url
-     */
-    String getAbsoluteUrl(String ip) {
-        return PROTOCOL + ip + COLON + PORT;
     }
 
 }

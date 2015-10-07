@@ -9,6 +9,6 @@ public interface VolumeCallback {
     /**
      * @param volume the volume
      */
-    void setVolume(VolumeResponse volume);
+    void setVolume(Integer volume);
 
 }

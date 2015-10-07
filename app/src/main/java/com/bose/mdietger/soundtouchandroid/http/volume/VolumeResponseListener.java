@@ -24,7 +24,7 @@ public class VolumeResponseListener extends DefaultResponseListener {
     @Override
     public void onResponse(String response) {
         VolumeResponse volume = XmlMarshaller.getInstance().unmarshall(VolumeResponse.class, response);
-        callback.setVolume(volume);
+        callback.setVolume(volume.getActualVolume());
     }
 
 }

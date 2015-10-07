@@ -8,6 +8,7 @@ import com.bose.mdietger.soundtouchandroid.http.key.KeyState;
 import com.bose.mdietger.soundtouchandroid.http.key.KeyValue;
 import com.bose.mdietger.soundtouchandroid.http.volume.Volume;
 import com.bose.mdietger.soundtouchandroid.soundtouch.SoundTouch;
+import com.bose.mdietger.soundtouchandroid.websockets.DeviceUpdateCallback;
 import com.bose.mdietger.soundtouchandroid.websockets.WebSocketConnector;
 
 import org.java_websocket.drafts.Draft_17;
@@ -51,14 +52,14 @@ public class SoundTouchDeviceManager extends AbstractDeviceManager<SoundTouch> i
     // ----------------------------------------------------------------------------------------------- MESSAGES (WEBSOCKETS)
 
     @Override
-    public void listenForMessages() {
+    public void listenForMessages(DeviceUpdateCallback callback) {
         try {
             URI uri = new URI(WS_PROTOCOL + device.getIp() + COLON + WS_PORT);
 
             Map<String,String> headers = new HashMap<String, String>();
             headers.put("Sec-WebSocket-Protocol", "gabbo");
 
-            connector = new WebSocketConnector(uri, new Draft_17(), headers, 5000);
+            connector = new WebSocketConnector(uri, new Draft_17(), headers, 5000, callback);
             connector.connect();
 
             Log.d(TAG, "Listening for messages");
@@ -72,7 +73,6 @@ public class SoundTouchDeviceManager extends AbstractDeviceManager<SoundTouch> i
         if(connector == null) {
             return;
         }
-
         connector.close();
     }
 
@@ -94,17 +94,14 @@ public class SoundTouchDeviceManager extends AbstractDeviceManager<SoundTouch> i
         doPost(VOLUME, dataXml, responseListener, errorListener);
     }
 
+    // ----------------------------------------------------------------------------------------------- KEY
+
     @Override
     public void togglePower(Response.Listener responseListener, Response.ErrorListener errorListener) {
         Log.d(TAG, "Power device off");
         Key keyPress = new Key(KeyState.press.toString(), Key.SENDER.toString(), KeyValue.POWER.toString());
         Key keyRelease = new Key(KeyState.release.toString(), Key.SENDER.toString(), KeyValue.POWER.toString());
-
-        String dataXml = XmlMarshaller.getInstance().marshall(keyPress);
-        doPost(KEY, dataXml, responseListener, errorListener);
-
-        dataXml = XmlMarshaller.getInstance().marshall(keyRelease);
-        doPost(KEY, dataXml, responseListener, errorListener);
+        deviceKeyPress(keyPress, keyRelease, responseListener, errorListener);
     }
 
     @Override
@@ -112,11 +109,22 @@ public class SoundTouchDeviceManager extends AbstractDeviceManager<SoundTouch> i
         Log.d(TAG, "Click Preset button: " + presetNumber);
         Key keyPress = new Key(KeyState.press.toString(), Key.SENDER.toString(), presetNumber);
         Key keyRelease = new Key(KeyState.release.toString(), Key.SENDER.toString(), presetNumber);
+        deviceKeyPress(keyPress, keyRelease, responseListener, errorListener);
+    }
 
-        String dataXml = XmlMarshaller.getInstance().marshall(keyPress);
+    /**
+     * A device key press.
+     * @param press the press Key
+     * @param release the release Key
+     * @param responseListener the responseListener
+     * @param errorListener the errorListener
+     */
+    void deviceKeyPress(Key press, Key release, Response.Listener responseListener, Response.ErrorListener errorListener) {
+        // press
+        String dataXml = XmlMarshaller.getInstance().marshall(press);
         doPost(KEY, dataXml, responseListener, errorListener);
-
-        dataXml = XmlMarshaller.getInstance().marshall(keyRelease);
+        // release
+        dataXml = XmlMarshaller.getInstance().marshall(release);
         doPost(KEY, dataXml, responseListener, errorListener);
     }
 

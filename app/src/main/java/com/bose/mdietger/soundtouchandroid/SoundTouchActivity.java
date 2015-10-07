@@ -19,11 +19,13 @@ import com.bose.mdietger.soundtouchandroid.http.volume.VolumeCallback;
 import com.bose.mdietger.soundtouchandroid.http.volume.VolumeResponse;
 import com.bose.mdietger.soundtouchandroid.http.volume.VolumeResponseListener;
 import com.bose.mdietger.soundtouchandroid.soundtouch.SoundTouch;
+import com.bose.mdietger.soundtouchandroid.websockets.DeviceUpdate;
+import com.bose.mdietger.soundtouchandroid.websockets.DeviceUpdateCallback;
 
 /**
  * SoundTouchActivity class. Activity for controlling the SoundTouch device.
  */
-public class SoundTouchActivity extends AppCompatActivity implements VolumeCallback {
+public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdateCallback, VolumeCallback {
 
     private static final String TAG = "SoundTouchActivity";
 
@@ -50,14 +52,21 @@ public class SoundTouchActivity extends AppCompatActivity implements VolumeCallb
         sbVolume.setOnSeekBarChangeListener(new VolumeChangeHandler());
 
         deviceManager = new SoundTouchDeviceManager(device);
-        deviceManager.listenForMessages();
+        deviceManager.listenForMessages(this);
         deviceManager.getVolume(new VolumeResponseListener(this), new DefaultResponseErrorListener());
     }
 
     @Override
-    public void setVolume(VolumeResponse volume) {
-        tvVolume.setText(volume.getActualVolume().toString());
-        sbVolume.setProgress(volume.getActualVolume());
+    public void onMessage(DeviceUpdate update) {
+        if (update.getVolumeUpdated() != null) {
+            setVolume(update.getVolumeUpdated().getVolume().getActualVolume());
+        }
+    }
+
+    @Override
+    public void setVolume(Integer volume) {
+        tvVolume.setText(String.valueOf(volume));
+        sbVolume.setProgress(volume);
     }
 
     /**
@@ -105,7 +114,7 @@ public class SoundTouchActivity extends AppCompatActivity implements VolumeCallb
     @Override
     protected void onResume() {
         super.onResume();
-        deviceManager.listenForMessages();
+        deviceManager.listenForMessages(this);
     }
 
     @Override
@@ -124,9 +133,11 @@ public class SoundTouchActivity extends AppCompatActivity implements VolumeCallb
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            tvVolume.setText(String.valueOf(progress));
-            Volume vol = new Volume(String.valueOf(progress));
-            deviceManager.setVolume(vol, new DefaultResponseListener(), new DefaultResponseErrorListener());
+            if (fromUser) {
+                tvVolume.setText(String.valueOf(progress));
+                Volume vol = new Volume(String.valueOf(progress));
+                deviceManager.setVolume(vol, new DefaultResponseListener(), new DefaultResponseErrorListener());
+            }
         }
 
         @Override

@@ -3,6 +3,7 @@ package com.bose.mdietger.soundtouchandroid.http;
 import com.android.volley.Response;
 import com.bose.mdietger.soundtouchandroid.http.key.Key;
 import com.bose.mdietger.soundtouchandroid.http.volume.Volume;
+import com.bose.mdietger.soundtouchandroid.websockets.DeviceUpdateCallback;
 
 /**
  * DeviceManager interface. The DeviceManager defines all possible interactions
@@ -12,8 +13,13 @@ public interface DeviceManager {
 
     /**
      * Start listening for messages from device.
+     * @param callback the deviceUpdateCallback
      */
-    void listenForMessages();
+    void listenForMessages(DeviceUpdateCallback callback);
+
+    /**
+     * Stop listening for message from device.
+     */
     void stopListenForMessages();
 
     /**
