@@ -60,8 +60,13 @@ public class SoundTouchActivity extends AppCompatActivity implements VolumeCallb
         sbVolume.setProgress(volume.getActualVolume());
     }
 
+    /**
+     * Click power
+     * @param v the view
+     */
     public void onPowerButtonPressed(View v) {
-
+        Log.d(TAG, "Turn device on/off");
+        deviceManager.togglePower(new DefaultResponseListener(), new DefaultResponseErrorListener());
     }
 
     public void onSourceButtonPressed(View v) {
@@ -110,16 +115,6 @@ public class SoundTouchActivity extends AppCompatActivity implements VolumeCallb
         }
     }
 
-    /**
-     * Click volumeDown
-     * @param v the view
-     */
-    public void switchPower(View v) {
-        Log.d(TAG, "Turn device on/off");
 
-        Key key = new Key(KeyState.press.toString(),Key.SENDER.toString(), KeyValue.POWER.toString());
-
-
-    }
 
 }

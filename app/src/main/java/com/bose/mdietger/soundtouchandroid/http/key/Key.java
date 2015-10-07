@@ -1,5 +1,10 @@
 package com.bose.mdietger.soundtouchandroid.http.key;
 
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
+import org.simpleframework.xml.Text;
+
 /**
  * Keys are used as a simple means to interact with the SoundTouch speaker.
  */
@@ -11,15 +16,15 @@ public class Key {
     @Attribute(name = "state")
     private String state;
 
-    @Element(name = "value")
+    @Text
     private String value;
 
     @Attribute(name = "sender")
     private String sender;
 
-    public key(){}
+    public Key(){}
 
-    public key(String state, String value, String sender){
+    public Key(String state, String sender, String value){
         this.state = state;
         this.value = value;
         this.sender = sender;

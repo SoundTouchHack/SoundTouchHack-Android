@@ -3,6 +3,9 @@ package com.bose.mdietger.soundtouchandroid.http;
 import android.util.Log;
 
 import com.android.volley.Response;
+import com.bose.mdietger.soundtouchandroid.http.key.Key;
+import com.bose.mdietger.soundtouchandroid.http.key.KeyState;
+import com.bose.mdietger.soundtouchandroid.http.key.KeyValue;
 import com.bose.mdietger.soundtouchandroid.http.volume.Volume;
 import com.bose.mdietger.soundtouchandroid.soundtouch.SoundTouch;
 import com.bose.mdietger.soundtouchandroid.websockets.WebSocketConnector;
@@ -76,6 +79,7 @@ public class SoundTouchDeviceManager extends AbstractDeviceManager<SoundTouch> i
     // ----------------------------------------------------------------------------------------------- VOLUME
 
     private static final String VOLUME = "/volume";
+    private static final String KEY = "/key";
 
     @Override
     public void getVolume(Response.Listener responseListener, Response.ErrorListener errorListener) {
@@ -89,5 +93,20 @@ public class SoundTouchDeviceManager extends AbstractDeviceManager<SoundTouch> i
         String dataXml = XmlMarshaller.getInstance().marshall(volumeLevel);
         doPost(VOLUME, dataXml, responseListener, errorListener);
     }
+
+    @Override
+    public void togglePower(Response.Listener responseListener, Response.ErrorListener errorListener) {
+        Log.d(TAG, "Power device off");
+        Key keyPress = new Key(KeyState.press.toString(), Key.SENDER.toString(), KeyValue.POWER.toString());
+        Key keyRelease = new Key(KeyState.release.toString(), Key.SENDER.toString(), KeyValue.POWER.toString());
+
+        String dataXml = XmlMarshaller.getInstance().marshall(keyPress);
+        doPost(KEY, dataXml, responseListener, errorListener);
+
+        dataXml = XmlMarshaller.getInstance().marshall(keyRelease);
+        doPost(KEY, dataXml, responseListener, errorListener);
+    }
+
+
 
 }
