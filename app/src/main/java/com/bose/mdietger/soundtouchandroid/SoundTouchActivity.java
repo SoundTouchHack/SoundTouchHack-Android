@@ -61,7 +61,7 @@ public class SoundTouchActivity extends AppCompatActivity implements VolumeCallb
     }
 
     /**
-     * Click power
+     * Click toggle the device power button
      * @param v the view
      */
     public void onPowerButtonPressed(View v) {
