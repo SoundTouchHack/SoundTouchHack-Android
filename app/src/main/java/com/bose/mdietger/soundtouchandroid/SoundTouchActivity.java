@@ -11,6 +11,9 @@ import com.bose.mdietger.soundtouchandroid.http.DefaultResponseErrorListener;
 import com.bose.mdietger.soundtouchandroid.http.DefaultResponseListener;
 import com.bose.mdietger.soundtouchandroid.http.DeviceManager;
 import com.bose.mdietger.soundtouchandroid.http.SoundTouchDeviceManager;
+import com.bose.mdietger.soundtouchandroid.http.key.Key;
+import com.bose.mdietger.soundtouchandroid.http.key.KeyState;
+import com.bose.mdietger.soundtouchandroid.http.key.KeyValue;
 import com.bose.mdietger.soundtouchandroid.http.volume.Volume;
 import com.bose.mdietger.soundtouchandroid.http.volume.VolumeCallback;
 import com.bose.mdietger.soundtouchandroid.http.volume.VolumeResponse;
@@ -57,8 +60,13 @@ public class SoundTouchActivity extends AppCompatActivity implements VolumeCallb
         sbVolume.setProgress(volume.getActualVolume());
     }
 
+    /**
+     * Click toggle the device power button
+     * @param v the view
+     */
     public void onPowerButtonPressed(View v) {
-
+        Log.d(TAG, "Turn device on/off");
+        deviceManager.togglePower(new DefaultResponseListener(), new DefaultResponseErrorListener());
     }
 
     public void onSourceButtonPressed(View v) {
@@ -125,5 +133,7 @@ public class SoundTouchActivity extends AppCompatActivity implements VolumeCallb
 
         }
     }
+
+
 
 }
