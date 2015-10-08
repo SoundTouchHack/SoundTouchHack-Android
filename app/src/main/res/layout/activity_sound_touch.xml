@@ -45,9 +45,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/nowplaying"
+        android:id="@+id/nowPlaying"
+        android:layout_below="@+id/generalButtons"
+        android:layout_marginTop="20dip"
+        android:paddingLeft="2dip"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/nothing"
+        android:id="@+id/tvNowPlaying"
+        android:layout_below="@+id/nowPlaying"
+        android:layout_marginTop="10dip"
+        android:paddingLeft="2dip"
+        android:gravity="center" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/presets"
         android:id="@+id/tvPresets"
-        android:layout_below="@+id/generalButtons"
+        android:layout_below="@+id/tvNowPlaying"
         android:layout_marginTop="20dip"
         android:paddingLeft="2dip"/>
 

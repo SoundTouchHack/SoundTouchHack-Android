@@ -33,6 +33,7 @@ public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdat
 
     private TextView tvVolume;
     private SeekBar sbVolume;
+    private TextView tvNowPlaying;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdat
 
         tvVolume = (TextView) findViewById(R.id.tvVolumeValue);
         sbVolume = (SeekBar) findViewById(R.id.sbVolume);
+        tvNowPlaying = (TextView) findViewById(R.id.tvVolumeValue);
 
         sbVolume.setOnSeekBarChangeListener(new VolumeChangeHandler());
 

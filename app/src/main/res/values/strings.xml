@@ -6,5 +6,7 @@
     <string name="volume">Volume</string>
     <string name="presets">Presets</string>
     <string name="source">Source</string>
+    <string name="nowplaying">Now playing</string>
+    <string name="nothing">Nothing</string>
 
 </resources>
