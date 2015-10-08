@@ -147,10 +147,6 @@ public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdat
         super.onDestroy();
     }
 
-    private void listen() {
-        deviceManager.listenForMessages(this);
-    }
-
     private class VolumeChangeHandler implements SeekBar.OnSeekBarChangeListener {
 
         @Override
@@ -164,7 +160,7 @@ public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdat
 
         @Override
         public void onStartTrackingTouch(SeekBar seekBar) {
-            deviceManager.stopListenForMessages();
+
         }
 
         @Override
@@ -172,10 +168,8 @@ public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdat
             tvVolume.setText(String.valueOf(seekBar.getProgress()));
             Volume vol = new Volume(String.valueOf(seekBar.getProgress()));
             deviceManager.setVolume(vol, new DefaultResponseListener(), new DefaultResponseErrorListener());
-            listen();
         }
+
     }
-
-
 
 }

@@ -71,7 +71,9 @@ public class SoundTouchDeviceManager extends AbstractDeviceManager<SoundTouch> i
 
     @Override
     public boolean isListening() {
-        if(connector.getReadyState() == WebSocket.READYSTATE.CONNECTING || connector.getReadyState() == WebSocket.READYSTATE.OPEN || connector.getReadyState() == WebSocket.READYSTATE.NOT_YET_CONNECTED){
+        if(connector.getReadyState() == WebSocket.READYSTATE.CONNECTING
+                || connector.getReadyState() == WebSocket.READYSTATE.OPEN
+                || connector.getReadyState() == WebSocket.READYSTATE.NOT_YET_CONNECTED){
             return true;
         }
         return false;
