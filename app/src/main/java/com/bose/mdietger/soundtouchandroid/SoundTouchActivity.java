@@ -89,7 +89,8 @@ public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdat
     }
 
     public void onSourceButtonPressed(View v) {
-
+        Log.d(TAG, "Source button pressed");
+        deviceManager.toggleSource(new DefaultResponseListener(), new DefaultResponseErrorListener());
     }
 
     /**

@@ -114,6 +114,12 @@ public class SoundTouchDeviceManager extends AbstractDeviceManager<SoundTouch> i
     }
 
     @Override
+    public void toggleSource(Response.Listener responseListener, Response.ErrorListener errorListener) {
+        Log.d(TAG, "Toggle source button");
+        deviceKeyPress(KeyValue.AUX_INPUT.toString(), responseListener, errorListener);
+    }
+
+    @Override
     public void clickPreset(String presetNumber, Response.Listener responseListener, Response.ErrorListener errorListener) {
         Log.d(TAG, "Click Preset button: " + presetNumber);
         deviceKeyPress(presetNumber, responseListener, errorListener);
