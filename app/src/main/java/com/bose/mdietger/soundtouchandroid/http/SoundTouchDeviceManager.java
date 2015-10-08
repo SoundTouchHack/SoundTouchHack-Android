@@ -71,7 +71,9 @@ public class SoundTouchDeviceManager extends AbstractDeviceManager<SoundTouch> i
 
     @Override
     public boolean isListening() {
-        if(connector.getReadyState() == WebSocket.READYSTATE.CONNECTING || connector.getReadyState() == WebSocket.READYSTATE.OPEN || connector.getReadyState() == WebSocket.READYSTATE.NOT_YET_CONNECTED){
+        if(connector.getReadyState() == WebSocket.READYSTATE.CONNECTING
+                || connector.getReadyState() == WebSocket.READYSTATE.OPEN
+                || connector.getReadyState() == WebSocket.READYSTATE.NOT_YET_CONNECTED){
             return true;
         }
         return false;
@@ -108,32 +110,35 @@ public class SoundTouchDeviceManager extends AbstractDeviceManager<SoundTouch> i
     @Override
     public void togglePower(Response.Listener responseListener, Response.ErrorListener errorListener) {
         Log.d(TAG, "Power device off");
-        Key keyPress = new Key(KeyState.press.toString(), Key.SENDER.toString(), KeyValue.POWER.toString());
-        Key keyRelease = new Key(KeyState.release.toString(), Key.SENDER.toString(), KeyValue.POWER.toString());
-        deviceKeyPress(keyPress, keyRelease, responseListener, errorListener);
+        deviceKeyPress(KeyValue.POWER.toString(), responseListener, errorListener);
+    }
+
+    @Override
+    public void toggleSource(Response.Listener responseListener, Response.ErrorListener errorListener) {
+        Log.d(TAG, "Toggle source button");
+        deviceKeyPress(KeyValue.AUX_INPUT.toString(), responseListener, errorListener);
     }
 
     @Override
     public void clickPreset(String presetNumber, Response.Listener responseListener, Response.ErrorListener errorListener) {
         Log.d(TAG, "Click Preset button: " + presetNumber);
-        Key keyPress = new Key(KeyState.press.toString(), Key.SENDER.toString(), presetNumber);
-        Key keyRelease = new Key(KeyState.release.toString(), Key.SENDER.toString(), presetNumber);
-        deviceKeyPress(keyPress, keyRelease, responseListener, errorListener);
+        deviceKeyPress(presetNumber, responseListener, errorListener);
     }
 
     /**
      * A device key press.
-     * @param press the press Key
-     * @param release the release Key
+     * @param keyValue The value of the Key
      * @param responseListener the responseListener
      * @param errorListener the errorListener
      */
-    void deviceKeyPress(Key press, Key release, Response.Listener responseListener, Response.ErrorListener errorListener) {
+    void deviceKeyPress(String keyValue, Response.Listener responseListener, Response.ErrorListener errorListener) {
+        Key keyPress = new Key(KeyState.press.toString(), Key.SENDER.toString(),keyValue );
+        Key keyRelease = new Key(KeyState.release.toString(), Key.SENDER.toString(), keyValue);
         // press
-        String dataXml = XmlMarshaller.getInstance().marshall(press);
+        String dataXml = XmlMarshaller.getInstance().marshall(keyPress);
         doPost(KEY, dataXml, responseListener, errorListener);
         // release
-        dataXml = XmlMarshaller.getInstance().marshall(release);
+        dataXml = XmlMarshaller.getInstance().marshall(keyRelease);
         doPost(KEY, dataXml, responseListener, errorListener);
     }
 
