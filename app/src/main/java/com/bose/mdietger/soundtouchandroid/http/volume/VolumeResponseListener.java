@@ -4,17 +4,17 @@ import com.bose.mdietger.soundtouchandroid.http.DefaultResponseListener;
 import com.bose.mdietger.soundtouchandroid.http.XmlMarshaller;
 
 /**
- * VolumeResponseListener class. This class is responsible of handling
+ * BassResponseListener class. This class is responsible of handling
  * GET volume responses.
  */
 public class VolumeResponseListener extends DefaultResponseListener {
 
-    private static final String TAG = "VolumeResponseListener";
+    private static final String TAG = "BassResponseListener";
 
     private VolumeCallback callback;
 
     /**
-     * Instantiates a new VolumeResponseListener.
+     * Instantiates a new BassResponseListener.
      * @param callback the callback
      */
     public VolumeResponseListener(VolumeCallback callback) {

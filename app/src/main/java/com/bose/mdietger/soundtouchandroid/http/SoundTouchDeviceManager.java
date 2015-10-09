@@ -3,6 +3,7 @@ package com.bose.mdietger.soundtouchandroid.http;
 import android.util.Log;
 
 import com.android.volley.Response;
+import com.bose.mdietger.soundtouchandroid.http.bass.Bass;
 import com.bose.mdietger.soundtouchandroid.http.key.Key;
 import com.bose.mdietger.soundtouchandroid.http.key.KeyState;
 import com.bose.mdietger.soundtouchandroid.http.key.KeyValue;
@@ -90,6 +91,7 @@ public class SoundTouchDeviceManager extends AbstractDeviceManager<SoundTouch> i
     // ----------------------------------------------------------------------------------------------- VOLUME
 
     private static final String VOLUME = "/volume";
+    private static final String BASS = "/bass";
     private static final String KEY = "/key";
 
     @Override
@@ -103,6 +105,13 @@ public class SoundTouchDeviceManager extends AbstractDeviceManager<SoundTouch> i
         Log.d(TAG, "setVolume");
         String dataXml = XmlMarshaller.getInstance().marshall(volumeLevel);
         doPost(VOLUME, dataXml, responseListener, errorListener);
+    }
+
+    @Override
+    public void setBass(Bass bassLevel, Response.Listener responseListener, Response.ErrorListener errorListener) {
+        Log.d(TAG, "setBass");
+        String dataXml = XmlMarshaller.getInstance().marshall(bassLevel);
+        doPost(BASS, dataXml, responseListener, errorListener);
     }
 
     // ----------------------------------------------------------------------------------------------- KEY

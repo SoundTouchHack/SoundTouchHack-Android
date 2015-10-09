@@ -11,6 +11,8 @@ import com.bose.mdietger.soundtouchandroid.http.DefaultResponseErrorListener;
 import com.bose.mdietger.soundtouchandroid.http.DefaultResponseListener;
 import com.bose.mdietger.soundtouchandroid.http.DeviceManager;
 import com.bose.mdietger.soundtouchandroid.http.SoundTouchDeviceManager;
+import com.bose.mdietger.soundtouchandroid.http.bass.Bass;
+import com.bose.mdietger.soundtouchandroid.http.bass.BassCallback;
 import com.bose.mdietger.soundtouchandroid.http.key.Key;
 import com.bose.mdietger.soundtouchandroid.http.key.KeyState;
 import com.bose.mdietger.soundtouchandroid.http.key.KeyValue;
@@ -25,14 +27,16 @@ import com.bose.mdietger.soundtouchandroid.websockets.DeviceUpdateCallback;
 /**
  * SoundTouchActivity class. Activity for controlling the SoundTouch device.
  */
-public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdateCallback, VolumeCallback {
+public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdateCallback, VolumeCallback, BassCallback{
 
     private static final String TAG = "SoundTouchActivity";
 
     private DeviceManager deviceManager;
 
     private TextView tvVolume;
+    private TextView tvBass;
     private SeekBar sbVolume;
+    private SeekBar sbBass;
     private TextView tvNowPlaying;
 
     @Override
@@ -48,10 +52,13 @@ public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdat
         tvIP.setText(device.getIp());
 
         tvVolume = (TextView) findViewById(R.id.tvVolumeValue);
+        tvBass = (TextView) findViewById(R.id.tvBass);
         sbVolume = (SeekBar) findViewById(R.id.sbVolume);
+        sbBass = (SeekBar) findViewById(R.id.sbBass);
         tvNowPlaying = (TextView) findViewById(R.id.tvVolumeValue);
 
         sbVolume.setOnSeekBarChangeListener(new VolumeChangeHandler());
+        sbBass.setOnSeekBarChangeListener(new BassChangeHandler());
 
         deviceManager = new SoundTouchDeviceManager(device);
         deviceManager.listenForMessages(this);
@@ -78,7 +85,17 @@ public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdat
                 sbVolume.setProgress(volume);
             }
         });
+    }
 
+    @Override
+    public void setBass(final Integer bass) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tvBass.setText(String.valueOf(bass));
+                sbBass.setProgress(bass);
+            }
+        });
     }
 
     /**
@@ -94,6 +111,7 @@ public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdat
         Log.d(TAG, "Source button pressed");
         deviceManager.toggleSource(new DefaultResponseListener(), new DefaultResponseErrorListener());
     }
+
 
     /**
      * One of the preset buttons has been pressend
@@ -171,6 +189,31 @@ public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdat
             tvVolume.setText(String.valueOf(seekBar.getProgress()));
             Volume vol = new Volume(String.valueOf(seekBar.getProgress()));
             deviceManager.setVolume(vol, new DefaultResponseListener(), new DefaultResponseErrorListener());
+        }
+
+    }
+
+    private class BassChangeHandler implements SeekBar.OnSeekBarChangeListener {
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            if (fromUser) {
+                tvBass.setText(String.valueOf(progress -  9));
+                Bass bass = new Bass(String.valueOf(progress - 9));
+                deviceManager.setBass(bass, new DefaultResponseListener(), new DefaultResponseErrorListener());
+            }
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            tvBass.setText(String.valueOf(seekBar.getProgress() - 9));
+            Bass bass = new Bass(String.valueOf(seekBar.getProgress() - 9));
+            deviceManager.setBass(bass, new DefaultResponseListener(), new DefaultResponseErrorListener());
         }
 
     }

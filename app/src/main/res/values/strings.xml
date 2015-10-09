@@ -8,5 +8,6 @@
     <string name="source">Source</string>
     <string name="nowplaying">Now playing</string>
     <string name="nothing">Nothing</string>
+    <string name="BassCapabilities">Bass Capabilities</string>
 
 </resources>

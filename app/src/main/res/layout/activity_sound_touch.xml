@@ -177,4 +177,41 @@
 
     </LinearLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/BassCapabilities"
+        android:id="@+id/tvBassTitle"
+        android:layout_below="@+id/llVolume"
+        android:layout_marginTop="20dip"
+        android:paddingLeft="3dip" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvBassTitle"
+        android:layout_marginTop="10dip"
+        android:layout_marginBottom="10dip"
+        android:id="@+id/llBass">
+
+
+        <SeekBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sbBass"
+            android:max="9"
+            android:layout_weight="1.0" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="-9"
+            android:gravity="center"
+            android:id="@+id/tvBass" />
+
+    </LinearLayout>
+
 </RelativeLayout>

@@ -1,6 +1,7 @@
 package com.bose.mdietger.soundtouchandroid.http;
 
 import com.android.volley.Response;
+import com.bose.mdietger.soundtouchandroid.http.bass.Bass;
 import com.bose.mdietger.soundtouchandroid.http.key.Key;
 import com.bose.mdietger.soundtouchandroid.http.volume.Volume;
 import com.bose.mdietger.soundtouchandroid.websockets.DeviceUpdateCallback;
@@ -42,6 +43,14 @@ public interface DeviceManager {
      * @param errorListener the errorListener
      */
     void setVolume(Volume volumeLevel, Response.Listener responseListener, Response.ErrorListener errorListener);
+
+    /**
+     * Sets Bass level.
+     * @param bassLevel the bass level to set
+     * @param responseListener the responseListener
+     * @param errorListener the errorListener
+     */
+    void setBass(Bass bassLevel, Response.Listener responseListener, Response.ErrorListener errorListener);
 
 
     /**
