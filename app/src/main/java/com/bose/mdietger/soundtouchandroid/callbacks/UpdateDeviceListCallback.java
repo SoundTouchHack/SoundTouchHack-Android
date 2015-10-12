@@ -1,8 +1,14 @@
 package com.bose.mdietger.soundtouchandroid.callbacks;
 
 /**
- * Created by mdiet on 5/10/2015.
+ * UpdateDeviceListCallback class. This class is used to give device
+ * list updates.
  */
 public interface UpdateDeviceListCallback {
+
+    /**
+     * Update the device list.
+     */
     void update();
+
 }

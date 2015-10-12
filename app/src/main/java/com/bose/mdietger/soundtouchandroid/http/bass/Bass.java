@@ -7,7 +7,7 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
 /**
- * Created by BC828427 on 8/10/2015.
+ * Bass class. This class represents the bass.
  */
 @Root
 public class Bass extends Value {

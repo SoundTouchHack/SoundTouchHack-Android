@@ -3,7 +3,7 @@ package com.bose.mdietger.soundtouchandroid.http.value;
 import org.simpleframework.xml.Text;
 
 /**
- * Created by BC828427 on 9/10/2015.
+ * Value class. This class represents a value.
  */
 public class Value {
 

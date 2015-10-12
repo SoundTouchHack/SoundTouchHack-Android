@@ -91,8 +91,6 @@ public class SoundTouchDeviceManager extends AbstractDeviceManager<SoundTouch> i
     // ----------------------------------------------------------------------------------------------- VOLUME
 
     private static final String VOLUME = "/volume";
-    private static final String BASS = "/bass";
-    private static final String KEY = "/key";
 
     @Override
     public void getVolume(Response.Listener responseListener, Response.ErrorListener errorListener) {
@@ -107,6 +105,10 @@ public class SoundTouchDeviceManager extends AbstractDeviceManager<SoundTouch> i
         doPost(VOLUME, dataXml, responseListener, errorListener);
     }
 
+    // ----------------------------------------------------------------------------------------------- BASS
+
+    private static final String BASS = "/bass";
+
     @Override
     public void setBass(Bass bassLevel, Response.Listener responseListener, Response.ErrorListener errorListener) {
         Log.d(TAG, "setBass");
@@ -115,6 +117,8 @@ public class SoundTouchDeviceManager extends AbstractDeviceManager<SoundTouch> i
     }
 
     // ----------------------------------------------------------------------------------------------- KEY
+
+    private static final String KEY = "/key";
 
     @Override
     public void togglePower(Response.Listener responseListener, Response.ErrorListener errorListener) {

@@ -1,7 +1,7 @@
 package com.bose.mdietger.soundtouchandroid.http.key;
 
 /**
- * Different values for a key
+ * Different values for a key.
  */
 public enum KeyValue {
     PLAY,
