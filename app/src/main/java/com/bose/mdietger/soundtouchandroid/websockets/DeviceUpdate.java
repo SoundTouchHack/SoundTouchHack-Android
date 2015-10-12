@@ -1,5 +1,7 @@
 package com.bose.mdietger.soundtouchandroid.websockets;
 
+import com.bose.mdietger.soundtouchandroid.websockets.playing.NowPlayingUpdated;
+import com.bose.mdietger.soundtouchandroid.websockets.selection.NowSelectionUpdated;
 import com.bose.mdietger.soundtouchandroid.websockets.volume.VolumeUpdated;
 
 import org.simpleframework.xml.Attribute;
@@ -18,6 +20,12 @@ public class DeviceUpdate {
 
     @Element(name = "volumeUpdated", required = false)
     private VolumeUpdated volumeUpdated;
+
+    @Element(name = "nowSelectionUpdated", required =  false)
+    private NowSelectionUpdated nowSelectionUpdated;
+
+    @Element(name = "nowPlayingUpdated", required = false)
+    private NowPlayingUpdated nowPlayingUpdated;
 
     /**
      * @return the deviceId.
@@ -47,4 +55,19 @@ public class DeviceUpdate {
         this.volumeUpdated = volumeUpdated;
     }
 
+    public NowSelectionUpdated getNowSelectionUpdated() {
+        return nowSelectionUpdated;
+    }
+
+    public void setNowSelectionUpdated(NowSelectionUpdated nowSelectionUpdated) {
+        this.nowSelectionUpdated = nowSelectionUpdated;
+    }
+
+    public NowPlayingUpdated getNowPlayingUpdated() {
+        return nowPlayingUpdated;
+    }
+
+    public void setNowPlayingUpdated(NowPlayingUpdated nowPlayingUpdated) {
+        this.nowPlayingUpdated = nowPlayingUpdated;
+    }
 }

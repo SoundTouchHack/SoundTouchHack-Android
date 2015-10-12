@@ -3,7 +3,7 @@ package com.bose.mdietger.soundtouchandroid.websockets.volume;
 import org.simpleframework.xml.Element;
 
 /**
- * VolumeUpdated class. Part of DeviceUpdated class. Contains updated
+ * NowSelectionUpdated class. Part of DeviceUpdated class. Contains updated
  * Volume info.
  */
 public class VolumeUpdated {

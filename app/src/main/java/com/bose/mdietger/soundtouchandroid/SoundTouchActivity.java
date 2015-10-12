@@ -55,7 +55,7 @@ public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdat
         tvBass = (TextView) findViewById(R.id.tvBass);
         sbVolume = (SeekBar) findViewById(R.id.sbVolume);
         sbBass = (SeekBar) findViewById(R.id.sbBass);
-        tvNowPlaying = (TextView) findViewById(R.id.tvVolumeValue);
+        tvNowPlaying = (TextView) findViewById(R.id.tvNowPlaying);
 
         sbVolume.setOnSeekBarChangeListener(new VolumeChangeHandler());
         sbBass.setOnSeekBarChangeListener(new BassChangeHandler());
@@ -70,12 +70,20 @@ public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdat
         if (update.getVolumeUpdated() != null) {
             setVolume(update.getVolumeUpdated().getVolume().getActualVolume());
         }
+        if (update.getNowSelectionUpdated() != null) {
+            setNowPlaying(update.getNowSelectionUpdated().getPreset().getContentItem().getItemName().getValue());
+        }
     }
 
-    /**
-     * http://stackoverflow.com/questions/5161951/android-only-the-original-thread-that-created-a-view-hierarchy-can-touch-its-vi
-     * @param volume the volume
-     */
+    public void setNowPlaying(final String nowPlaying) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tvNowPlaying.setText(nowPlaying);
+            }
+        });
+    }
+
     @Override
     public void setVolume(final Integer volume) {
         runOnUiThread(new Runnable() {
