@@ -13,6 +13,7 @@ import com.bose.mdietger.soundtouchandroid.http.DeviceManager;
 import com.bose.mdietger.soundtouchandroid.http.SoundTouchDeviceManager;
 import com.bose.mdietger.soundtouchandroid.http.bass.Bass;
 import com.bose.mdietger.soundtouchandroid.http.bass.BassCallback;
+import com.bose.mdietger.soundtouchandroid.http.bass.BassResponseListener;
 import com.bose.mdietger.soundtouchandroid.http.key.Key;
 import com.bose.mdietger.soundtouchandroid.http.key.KeyState;
 import com.bose.mdietger.soundtouchandroid.http.key.KeyValue;
@@ -62,6 +63,7 @@ public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdat
 
         deviceManager = new SoundTouchDeviceManager(device);
         deviceManager.listenForMessages(this);
+        deviceManager.getBass(new BassResponseListener(this), new DefaultResponseErrorListener());
         deviceManager.getVolume(new VolumeResponseListener(this), new DefaultResponseErrorListener());
     }
 
@@ -176,6 +178,10 @@ public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdat
         super.onDestroy();
     }
 
+    /**
+     * VolumeChangeHandler class. This class is used as handler
+     * with the Volume seekbar.
+     */
     private class VolumeChangeHandler implements SeekBar.OnSeekBarChangeListener {
 
         @Override
@@ -201,13 +207,17 @@ public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdat
 
     }
 
+    /**
+     * BassChangeHandler class. This class is used as handler
+     * with the Bass seekbar.
+     */
     private class BassChangeHandler implements SeekBar.OnSeekBarChangeListener {
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             if (fromUser) {
-                tvBass.setText(String.valueOf(progress -  9));
-                Bass bass = new Bass(String.valueOf(progress - 9));
+                tvBass.setText(String.valueOf(progress));
+                Bass bass = new Bass(String.valueOf(progress));
                 deviceManager.setBass(bass, new DefaultResponseListener(), new DefaultResponseErrorListener());
             }
         }
@@ -219,8 +229,8 @@ public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdat
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            tvBass.setText(String.valueOf(seekBar.getProgress() - 9));
-            Bass bass = new Bass(String.valueOf(seekBar.getProgress() - 9));
+            tvBass.setText(String.valueOf(seekBar.getProgress()));
+            Bass bass = new Bass(String.valueOf(seekBar.getProgress()));
             deviceManager.setBass(bass, new DefaultResponseListener(), new DefaultResponseErrorListener());
         }
 

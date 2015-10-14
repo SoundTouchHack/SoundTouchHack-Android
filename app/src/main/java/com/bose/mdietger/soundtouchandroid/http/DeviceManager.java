@@ -45,6 +45,13 @@ public interface DeviceManager {
     void setVolume(Volume volumeLevel, Response.Listener responseListener, Response.ErrorListener errorListener);
 
     /**
+     * Get the current bass level.
+     * @param responseListener the responseListener
+     * @param errorListener the errorListener
+     */
+    void getBass(Response.Listener responseListener, Response.ErrorListener errorListener);
+
+    /**
      * Sets Bass level.
      * @param bassLevel the bass level to set
      * @param responseListener the responseListener

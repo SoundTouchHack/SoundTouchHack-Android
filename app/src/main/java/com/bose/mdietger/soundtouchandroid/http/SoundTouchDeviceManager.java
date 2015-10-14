@@ -110,6 +110,12 @@ public class SoundTouchDeviceManager extends AbstractDeviceManager<SoundTouch> i
     private static final String BASS = "/bass";
 
     @Override
+    public void getBass(Response.Listener responseListener, Response.ErrorListener errorListener) {
+        Log.d(TAG, "getBass");
+        doGet(BASS, responseListener, errorListener);
+    }
+
+    @Override
     public void setBass(Bass bassLevel, Response.Listener responseListener, Response.ErrorListener errorListener) {
         Log.d(TAG, "setBass");
         String dataXml = XmlMarshaller.getInstance().marshall(bassLevel);
