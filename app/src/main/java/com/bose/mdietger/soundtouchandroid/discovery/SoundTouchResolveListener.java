@@ -37,7 +37,7 @@ public class SoundTouchResolveListener implements NsdManager.ResolveListener {
         Log.e(TAG, "Resolve failed " + errorCode);
 
         // on failure.. retry
-        mNsdManager.discoverServices(SoundTouchDiscoverer.SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, mDiscoveryListener);
+        // mNsdManager.discoverServices(SoundTouchDiscoverer.SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, mDiscoveryListener);
     }
 
     @Override
