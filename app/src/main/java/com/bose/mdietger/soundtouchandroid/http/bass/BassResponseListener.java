@@ -26,7 +26,7 @@ public class BassResponseListener extends DefaultResponseListener {
     @Override
     public void onResponse(String response) {
         BassResponse bass = XmlMarshaller.getInstance().unmarshall(BassResponse.class, response);
-        callback.setBass(bass.getActualbass() + 9);
+        callback.setBass(bass.getActualbass());
     }
 
 }

@@ -103,7 +103,7 @@ public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdat
             @Override
             public void run() {
                 tvBass.setText(String.valueOf(bass));
-                sbBass.setProgress(bass);
+                sbBass.setProgress(bass + 9);
             }
         });
     }
@@ -117,11 +117,14 @@ public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdat
         deviceManager.togglePower(new DefaultResponseListener(), new DefaultResponseErrorListener());
     }
 
+    /**
+     * Click toggle the source.
+     * @param v the view
+     */
     public void onSourceButtonPressed(View v) {
         Log.d(TAG, "Source button pressed");
         deviceManager.toggleSource(new DefaultResponseListener(), new DefaultResponseErrorListener());
     }
-
 
     /**
      * One of the preset buttons has been pressend
@@ -216,8 +219,8 @@ public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdat
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             if (fromUser) {
-                tvBass.setText(String.valueOf(progress));
-                Bass bass = new Bass(String.valueOf(progress));
+                tvBass.setText(String.valueOf(progress - 9));
+                Bass bass = new Bass(String.valueOf(progress - 9));
                 deviceManager.setBass(bass, new DefaultResponseListener(), new DefaultResponseErrorListener());
             }
         }
@@ -229,8 +232,8 @@ public class SoundTouchActivity extends AppCompatActivity implements DeviceUpdat
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            tvBass.setText(String.valueOf(seekBar.getProgress()));
-            Bass bass = new Bass(String.valueOf(seekBar.getProgress()));
+            tvBass.setText(String.valueOf(seekBar.getProgress() - 9));
+            Bass bass = new Bass(String.valueOf(seekBar.getProgress() - 9));
             deviceManager.setBass(bass, new DefaultResponseListener(), new DefaultResponseErrorListener());
         }
 

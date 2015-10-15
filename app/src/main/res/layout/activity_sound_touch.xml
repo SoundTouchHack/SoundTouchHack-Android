@@ -201,7 +201,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/sbBass"
-            android:max="18"
+            android:max="9"
             android:layout_weight="1.0" />
 
         <TextView
